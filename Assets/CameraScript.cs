@@ -13,14 +13,14 @@ public class CameraScript : MonoBehaviour {
 	void Update () {
 		float translation = Time.deltaTime * 40;
 
-		if(Input.GetKey("a"))
+		if(Input.GetKey("q"))
 		{
 			//transform.Rotate(Vector3.forward, translation, Space.World);
 			transform.Rotate(Vector3.down, translation, Space.World);
 
 
 		}
-		if(Input.GetKey("d"))
+		if(Input.GetKey("e"))
 		{
 			//transform.Rotate(Vector3.back, translation, Space.World);
 			transform.Rotate(Vector3.up, translation, Space.World);
