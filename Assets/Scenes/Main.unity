@@ -480,7 +480,7 @@ MonoBehaviour:
   - 500
   normalMaps:
   - {fileID: 2800000, guid: 4f46b7932987dde49bce4faeb0a9ec3d, type: 3}
-  - {fileID: 2800000, guid: 62e1eaaea6dbba444b00ec21f5e7df91, type: 3}
+  - {fileID: 2800000, guid: 26e8eb12de4c8ee4196b2b4628fb588e, type: 3}
 --- !u!4 &1520377686
 Transform:
   m_ObjectHideFlags: 0
