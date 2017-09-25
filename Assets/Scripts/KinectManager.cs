@@ -96,8 +96,9 @@ public class KinectManager : MonoBehaviour {
 
 	void FixedUpdate() {
 		// TODO: Better game controller.
-		gameObject.transform.Translate(gameObject.transform.forward * 5.0f);
-		gameObject.transform.Rotate (new Vector3 (0, angle * Time.deltaTime, 0));
+
+		// Move the player forward.
+		gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.deltaTime * 50.0f);
 	}
 
 
@@ -170,16 +171,14 @@ public class KinectManager : MonoBehaviour {
 
 		//TODO: Use physics.
 
-		// Tilt the player object.
-		if(lhy < rhy) {
-			angle = -angle;
-			//gameObject.transform.eulerAngles = new Vector3 (0, 0, -angle);
-			//gameObject.transform.Rotate (new Vector3 (0, angle * Time.deltaTime, 0));
+		// Rotate the player and tilt the graphics.
+		if(lhy > rhy) {
+			gameObject.transform.Rotate (Vector3.up * Time.deltaTime * angle, Space.World);
+			transform.Find("Cube").localEulerAngles = new Vector3(0, 0, -angle);
 		} else {
-			//gameObject.transform.eulerAngles = new Vector3 (0, 0, angle);
-			//gameObject.transform.Rotate (new Vector3 (0, -angle * Time.deltaTime, 0));
+			gameObject.transform.Rotate (Vector3.down * Time.deltaTime * angle, Space.World);
+			transform.Find("Cube").localEulerAngles = new Vector3(0, 0, angle);
 		}
-		Debug.Log (angle);
 
 	}
 
