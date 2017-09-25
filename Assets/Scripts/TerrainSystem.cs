@@ -297,6 +297,11 @@ public class TerrainSystem : MonoBehaviour {
 				// How steep the terrain is.
 				float steepness = angle / 90.0f;
 
+				// Make the border between snow and mountain more clear.
+				if(steepness > 0.35) {
+					steepness = 1;
+				}
+
 				// Apply less snow and more mountain texture to steep areas.
 				splatMaps [alphaX, alphaZ, 0] = 1 - steepness;
 				splatMaps [alphaX, alphaZ, 1] = steepness;
