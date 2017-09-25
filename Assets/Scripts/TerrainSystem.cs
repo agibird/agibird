@@ -21,11 +21,18 @@ public class TerrainSystem : MonoBehaviour {
 	// The terrain tiles which constitutes the terrain.
 	private GameObject[,] terrainTiles;
 
+	public Texture2D[] textures;
+
+	public float[] textureTileSize;
+
+	public Texture2D[] normalMaps;
+
 	// Use this for initialization
 	void Start () {
 		buildTiles ();
 		BuildMap ();
 		BuildTerrain ();
+		BuildTextures ();
 	}
 	
 	// Update is called once per frame
@@ -72,6 +79,8 @@ public class TerrainSystem : MonoBehaviour {
 				tile.transform.localPosition = new Vector3 (x * tileSize, 0, z * tileSize);
 
 				terrainTiles [x, z] = tile;
+
+				terrain.basemapDistance = 2000.0f;
 			}
 		}
 
@@ -234,6 +243,67 @@ public class TerrainSystem : MonoBehaviour {
 			}
 		}
 		terrainData.SetHeights (0, 0, heights);
+	}
+
+
+
+
+
+	/// <summary>
+	/// Builds the terrain texture structures.
+	/// </summary>
+	void BuildTextures() {
+
+		SplatPrototype[] splatPrototypes = new SplatPrototype[textures.Length];
+
+		// Get the textures and normal maps from the inspector.
+		for (int i = 0; i < splatPrototypes.Length; i++) {
+			splatPrototypes [i] = new SplatPrototype ();
+			splatPrototypes [i].texture = textures [i];
+			splatPrototypes [i].tileSize = new Vector2 (textureTileSize [i], textureTileSize [i]);
+			splatPrototypes [i].normalMap = normalMaps [i];
+		}
+
+		// Add the textures and normal maps to each tile.
+		for (int z = 0; z < nTiles; z++) {
+			for (int x = 0; x < nTiles; x++) {
+				terrainTiles [x, z].GetComponent<Terrain> ().terrainData.splatPrototypes = splatPrototypes;
+				ApplyTextures (terrainTiles [x, z].GetComponent<Terrain> ().terrainData);
+			}
+		}
+
+	}
+
+
+
+
+
+	/// <summary>
+	/// Applies the textures to the terrain. The textures are apllied according to how steep the terrain is.
+	/// </summary>
+	/// <param name="terrainData">Terrain data.</param>
+	void ApplyTextures(TerrainData terrainData) {
+
+		float[,,] splatMaps = terrainData.GetAlphamaps (0, 0, terrainData.alphamapWidth, terrainData.alphamapHeight);
+
+		for (int alphaZ = 0; alphaZ < terrainData.alphamapWidth; alphaZ++) {
+			for (int alphaX = 0; alphaX < terrainData.alphamapHeight; alphaX++) {
+				float x = (float)alphaX / (float)terrainData.alphamapWidth;
+				float z = (float)alphaZ / (float)terrainData.alphamapHeight;
+
+				// Get the gradient.
+				float angle = terrainData.GetSteepness (z, x);
+
+				// How steep the terrain is.
+				float steepness = angle / 90.0f;
+
+				// Apply less snow and more mountain texture to steep areas.
+				splatMaps [alphaX, alphaZ, 0] = 1 - steepness;
+				splatMaps [alphaX, alphaZ, 1] = steepness;
+			}
+		}
+
+		terrainData.SetAlphamaps (0, 0, splatMaps);
 	}
 
 

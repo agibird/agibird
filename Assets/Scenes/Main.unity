@@ -472,6 +472,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theCamera: {fileID: 0}
+  textures:
+  - {fileID: 2800000, guid: 0fc52d060a27696438fcba821b4edb5a, type: 3}
+  - {fileID: 2800000, guid: d29cea24b6eeb4044adb6394357a728f, type: 3}
+  textureTileSize:
+  - 500
+  - 500
+  normalMaps:
+  - {fileID: 2800000, guid: 4f46b7932987dde49bce4faeb0a9ec3d, type: 3}
+  - {fileID: 2800000, guid: 62e1eaaea6dbba444b00ec21f5e7df91, type: 3}
 --- !u!4 &1520377686
 Transform:
   m_ObjectHideFlags: 0
