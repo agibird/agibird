@@ -19,6 +19,10 @@ public class KeyboardManager : MonoBehaviour {
 			Debug.Log("The Keyboard Controller is used.");
 			printed = true;
 		}
+	}
+
+	void FixedUpdate() {
+		gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.deltaTime * 50.0f);
 
 		float rotation = Input.GetAxis ("Horizontal") * 10.0f;
 		rotation *= Time.deltaTime;
@@ -26,10 +30,6 @@ public class KeyboardManager : MonoBehaviour {
 		tilt = Mathf.Min (rotation, 45.0f);
 
 		gameObject.transform.Rotate (0, rotation, 0);
-		transform.Find("Cube").localEulerAngles = new Vector3(0, 0, -tilt * 100.0f);
-	}
-
-	void FixedUpdate() {
-		gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.deltaTime * 50.0f);
+		transform.Find("bird").localEulerAngles = new Vector3(0, 0, -tilt * 100.0f);
 	}
 }
