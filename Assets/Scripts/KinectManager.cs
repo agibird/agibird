@@ -20,9 +20,15 @@ public class KinectManager : MonoBehaviour {
 	void Start () {
 		
 	}
-	
+
+	void Update() {
+		// TODO: Better game controller.
+
+		// Move the player forward.
+	}
+
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if(printed == false) {
 			Debug.Log("The Kinect Controller is used.");
 			printed = true;
@@ -88,21 +94,10 @@ public class KinectManager : MonoBehaviour {
 				RefreshBodyObject(body, _Bodies[body.TrackingId]);
 			}
 		}
-	}
-
-
-
-
-
-	void FixedUpdate() {
-		// TODO: Better game controller.
-
-		// Move the player forward.
 		gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.deltaTime * 50.0f);
+
 	}
-
-
-
+		
 
 
 	private GameObject CreateBodyObject(ulong id)
@@ -174,10 +169,10 @@ public class KinectManager : MonoBehaviour {
 		// Rotate the player and tilt the graphics.
 		if(lhy > rhy) {
 			gameObject.transform.Rotate (Vector3.up * Time.deltaTime * angle, Space.World);
-			transform.Find("Cube").localEulerAngles = new Vector3(0, 0, -angle);
+			transform.Find("bird").localEulerAngles = new Vector3(0, 0, -angle);
 		} else {
 			gameObject.transform.Rotate (Vector3.down * Time.deltaTime * angle, Space.World);
-			transform.Find("Cube").localEulerAngles = new Vector3(0, 0, angle);
+			transform.Find("bird").localEulerAngles = new Vector3(0, 0, angle);
 		}
 
 	}
