@@ -7,13 +7,16 @@ public class TerrainSystem : MonoBehaviour {
 	public Camera theCamera;
 
 	// The resolution of each tile. This should be a power of 2, plus 1.
-	private int tileResolution = 1025;
+	private int tileResolution = 4097;
 
 	// The size of each tile in world space.
-	private float tileSize = 10000;
+	private float tileSize = 4097;
+
+	// The height of each tile in world space.
+	float tileHeight = 4096;
 
 	// The number of tiles in each direction.
-	private int nTiles = 3;
+	private int nTiles = 1;
 
 	// The heightmap of the world.
 	private float[,] map;
@@ -73,7 +76,7 @@ public class TerrainSystem : MonoBehaviour {
 				terrainData.heightmapResolution = tileResolution;
 				terrainData.baseMapResolution = 513;
 				terrainData.SetDetailResolution (1024, 32);
-				terrainData.size = new Vector3 (tileSize, 4096, tileSize);
+				terrainData.size = new Vector3 (tileSize, tileHeight, tileSize);
 
 				// Position the tile in the world.
 				tile.transform.localPosition = new Vector3 (x * tileSize, 0, z * tileSize);
@@ -179,8 +182,31 @@ public class TerrainSystem : MonoBehaviour {
 		float lacunarity = 2;
 
 		// Initial settings.
-		float frequency = 0.002f;
-		float amplitude = 0.65f;
+		float frequency = 0.001f;
+		float amplitude = 0.45f;
+
+		// Raise the terrain at the rim.
+		for (int z = 0; z < nTiles * tileResolution; z++) {
+			for (int x = 0; x < nTiles * tileResolution; x++) {
+
+				float xResolution = nTiles * tileResolution;
+				float zResolution = nTiles * tileResolution;
+				float centreSize = 1000;
+
+				if( (x < xResolution / 2) && (z < xResolution - x) && (z > x) ) {
+					map [x, z] = ((xResolution / 2) - centreSize - x) / tileHeight;
+				} else if ( (x > xResolution / 2) && (z > xResolution - x) && (z < x)) {
+					map [x, z] = ((xResolution / 2) - xResolution - centreSize + x) / tileHeight;
+				}  
+
+				if( (z < zResolution / 2) && (x <= xResolution - z) && (x >= z) ) {
+					map [x, z] = ((zResolution / 2) - centreSize - z) / tileHeight;
+				} else if((z > zResolution / 2) && (x >= xResolution - z) && (x <= z) ) {
+					map [x, z] = ((zResolution / 2) - xResolution - centreSize + z) / tileHeight;
+				}
+
+			}
+		}
 
 		// Build the initial height map.
 		for (int i = 0; i < octaves; i++) {
