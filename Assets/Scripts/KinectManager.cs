@@ -134,4 +134,76 @@ public class KinectManager : MonoBehaviour {
 
 
 
+	/// <summary>
+	/// Gets the distance from the left hand to the left shoulder.
+	/// </summary>
+	/// <returns>The distance from the left hand to the left shoulder.</returns>
+	public float getDistanceLeftHandToShoulder() {
+		float distance = getDistanceBetweenJoints (Kinect.JointType.ShoulderLeft, Kinect.JointType.HandLeft);
+		return distance;
+	}
+
+
+
+
+
+	/// <summary>
+	/// Gets the distance from the right hand to the right shoulder.
+	/// </summary>
+	/// <returns>The distance from the right hand to the right shoulder.</returns>
+	public float getDistanceRightHandToShoulder() {
+		float distance = getDistanceBetweenJoints (Kinect.JointType.ShoulderRight, Kinect.JointType.HandRight);
+		return distance;
+	}
+
+
+
+
+
+	/// <summary>
+	/// Gets the distance between two Kinect joints.
+	/// </summary>
+	/// <returns>The distance between two Kinect joints.</returns>
+	public float getDistanceBetweenJoints(Kinect.JointType from, Kinect.JointType to) {
+		
+		Kinect.Body[] data = _BodyManager.GetData();
+		if (data == null) {
+			Debug.Log("Not tracking");
+			return 0f;
+		}
+
+		foreach (var body in data) {
+			if (body == null) {
+				continue;
+			}
+
+			if (body.IsTracked) {
+				Kinect.Joint fromJoint = body.Joints [from];
+				Kinect.Joint toJoint = body.Joints [to];
+
+				// Get the x and y positions of the left and right hand.
+				float fromY = fromJoint.Position.Y;
+				float toY = toJoint.Position.Y;
+				float fromX = fromJoint.Position.X;
+				float toX = toJoint.Position.X;
+				float fromZ = fromJoint.Position.Z;
+				float toZ = toJoint.Position.Z;
+
+				// Get the vector between the left and right hand.
+				Vector3 fromVector = new Vector3 (fromX, fromY, fromZ);
+				Vector3 toVector = new Vector3 (toX, toY, toZ);
+				Vector3 lengthVector = toVector - fromVector;
+
+				return lengthVector.magnitude;
+			}
+		}
+
+		Debug.Log("Not tracking");
+		return 0f;
+	}
+
+
+
+
+
 }
