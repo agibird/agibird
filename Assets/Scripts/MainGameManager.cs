@@ -4,29 +4,28 @@ using UnityEngine;
 
 public class MainGameManager : MonoBehaviour {
 
-	public KinectManager kinectController;
+	public bool keyboardInput;
+	public bool kinectInput;
+	public bool controllerInput;
 
-	public KeyboardManager keyboardController;
+	private List<InputHandler> inputHandlers;
 
 	private Rigidbody rigidBody;
 
 	private float pitch, yaw;
 
-	public enum GameController {
-		KinectController,
-		KeyboardController
-	};
-
-	public GameController gameController;
-
 	// Use this for initialization
 	void Start () {
-		if(gameController == GameController.KinectController) {
-			keyboardController.enabled = false;
-			kinectController.enabled = true;
-		} else if(gameController == GameController.KeyboardController) {
-			kinectController.enabled = false;
-			keyboardController.enabled = true;
+
+		inputHandlers = new List<InputHandler>();
+		if (keyboardInput) {
+			inputHandlers.Add (new KeyboardInput ());
+		}
+		if (kinectInput) {
+			inputHandlers.Add (new KinectInput ());
+		}
+		if (controllerInput) {
+			inputHandlers.Add (new ControllerInput ());
 		}
 
 		rigidBody = gameObject.GetComponent<Rigidbody> ();
@@ -46,40 +45,52 @@ public class MainGameManager : MonoBehaviour {
 		AlignTowardsVelocity ();
 
 
-		//roll
+		float yaw = 0f;
+		float pitch = 0f;
 		float roll = 0f;
-		if(Input.GetKey("left")){
-			roll = +1.5f;
+		for (int i = 0; i < inputHandlers.Count; i++) {
+			InputHandler ih = inputHandlers[i];
+
+			if (ih == null) {
+				continue;
+			}
+
+			yaw += ih.getYaw ();
+			pitch += ih.getPitch ();
+			roll += ih.getRoll ();
 		}
-		if(Input.GetKey("right")){
-			roll = -0.75f;
-		}
 
-		roll *= 100f * velocityMagnitude * Time.fixedDeltaTime;
-
-		rigidBody.AddRelativeTorque (0, 0, roll);
+		yaw = Mathf.Clamp (yaw, -1, +1);
+		pitch = Mathf.Clamp (pitch, -1, +1);
+		roll = Mathf.Clamp (roll, -1, +1);
 
 
 
-		float liftMod = 1f;
-		if(Input.GetKey("down")){
-			liftMod = +2;
-		}
-		if(Input.GetKey("up")){
-			liftMod = -1.25f;
-		}
-		
-		
+		float rollTorque = roll * 300f * velocityMagnitude * Time.fixedDeltaTime;
+		rigidBody.AddRelativeTorque (0, 0, rollTorque);
+
+
+
+
+		float gravityStrength = 30;
 		
 		//gravity
-		rigidBody.velocity += 10 * new Vector3(0, -1, 0) * Time.fixedDeltaTime;
+		rigidBody.velocity += gravityStrength * new Vector3(0, -1, 0) * Time.fixedDeltaTime;
 
 		//Poop engine
-		rigidBody.velocity += 30 * forward * Time.fixedDeltaTime;
+		rigidBody.velocity += 20 * forward * Time.fixedDeltaTime;
 
-		//lift
-		float lift = 0.15f * liftMod * rigidBody.velocity.magnitude * Time.fixedDeltaTime;
-		rigidBody.velocity += up*lift - forward*Mathf.Max(0f, lift); //allow negative lift, but not negative drag.
+		//rigidBody.velocity += up*lift - forward*Mathf.Max(lift, 0.0f); //Allow negative lift, but not negative drag
+
+
+		//lift+pitch
+
+		float lift = Mathf.Min(gravityStrength, 0.5f * rigidBody.velocity.magnitude) * Time.fixedDeltaTime;
+		float pitchForce = 0.5f * -pitch * rigidBody.velocity.magnitude * Time.fixedDeltaTime;
+
+		float speed = rigidBody.velocity.magnitude;
+		rigidBody.velocity = (rigidBody.velocity + up * (lift + pitchForce)).normalized * speed;
+
 	}
 
 	void AlignTowardsVelocity () {
@@ -93,7 +104,7 @@ public class MainGameManager : MonoBehaviour {
 		float yaw = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
 		float pitch = Mathf.Atan2(localTarget.y, xz) * Mathf.Rad2Deg;
 
-		Vector3 eulerAngleVelocity = 400f * new Vector3 (-pitch, yaw, 0) * Time.fixedDeltaTime;
+		Vector3 eulerAngleVelocity = 1000f * new Vector3 (-pitch, yaw, 0) * Time.fixedDeltaTime;
 
 		rigidBody.AddRelativeTorque (eulerAngleVelocity);
 
