@@ -55,6 +55,8 @@ public class MainGameManager : MonoBehaviour {
 				continue;
 			}
 
+			ih.update ();
+
 			yaw += ih.getYaw ();
 			pitch += ih.getPitch ();
 			roll += ih.getRoll ();
