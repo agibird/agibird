@@ -5,204 +5,203 @@ using Kinect = Windows.Kinect;
 
 public class KinectManager : MonoBehaviour {
 
-	private bool printed = false;
-
 	public GameObject BodySourceManager;
 
-	private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
 	private BodySourceManager _BodyManager;
 
-	private float angle = 0;
+	// Kinect coordinate system scale.
+	private float scale = 100.0f;
 
-	private float limitAngle = 45.0f;
+
+
+
 
 	// Use this for initialization
 	void Start () {
+		if (BodySourceManager == null) {
+			return;
+		}
+
+		_BodyManager = BodySourceManager.GetComponent<BodySourceManager> ();
+		if (_BodyManager == null) {
+			return;
+		}
+	}
+
+
+	public string test() {
+		return "test";
+	}
+
+
+	/// <summary>
+	/// Returns the vector from the left hand to the right hand. This vector is always returned from the first of the tracked objects, 
+	/// regardless of how many objects are tracked. If no object is tracked, this will return the zero vector.
+	/// </summary>
+	/// <returns>The vector from the left hand to the right hand.</returns>
+	public Vector3 getVectorBetweenHands() {
 		
-	}
-
-	void Update() {
-		// TODO: Better game controller.
-
-		// Move the player forward.
-	}
-
-	// Update is called once per frame
-	void FixedUpdate () {
-		if(printed == false) {
-			Debug.Log("The Kinect Controller is used.");
-			printed = true;
-		}
-
-		if (BodySourceManager == null)
-		{
-			return;
-		}
-
-		_BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
-		if (_BodyManager == null)
-		{
-			return;
-		}
-
 		Kinect.Body[] data = _BodyManager.GetData();
-		if (data == null)
-		{
-			return;
+		if (data == null) {
+			Debug.Log("Not tracking");
+			return Vector3.zero;
 		}
 
-		List<ulong> trackedIds = new List<ulong>();
-		foreach(var body in data)
-		{
-			if (body == null)
-			{
+		foreach (var body in data) {
+			if (body == null) {
 				continue;
 			}
 
-			if(body.IsTracked)
-			{
-				trackedIds.Add (body.TrackingId);
+			if (body.IsTracked) {
+
+				Kinect.JointType lht = Kinect.JointType.HandLeft;
+				Kinect.JointType rht = Kinect.JointType.HandRight;
+
+				Kinect.Joint lh = body.Joints [Kinect.JointType.HandLeft];
+				Kinect.Joint rh = body.Joints [Kinect.JointType.HandRight];
+
+				// Get the x and y positions of the left and right hand.
+				float lhy = lh.Position.Y * scale;
+				float rhy = rh.Position.Y * scale;
+				float lhx = lh.Position.X * scale;
+				float rhx = rh.Position.X * scale;
+				float lhz = lh.Position.Z * scale;
+				float rhz = rh.Position.Z * scale;
+
+				// Get the vector between the left and right hand.
+				Vector3 lhVector = new Vector3 (lhx, lhy, -lhz);
+				Vector3 rhVector = new Vector3 (rhx, rhy, -rhz);
+				Vector3 handVector = rhVector - lhVector;
+
+				return handVector;
 			}
 		}
 
-		List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
-
-		// First delete untracked bodies
-		foreach(ulong trackingId in knownIds)
-		{
-			if(!trackedIds.Contains(trackingId))
-			{
-				Destroy(_Bodies[trackingId]);
-				_Bodies.Remove(trackingId);
-			}
-		}
-
-		foreach(var body in data)
-		{
-			if (body == null)
-			{
-				continue;
-			}
-
-			if(body.IsTracked)
-			{
-				if(!_Bodies.ContainsKey(body.TrackingId))
-				{
-					_Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
-				}
-
-				RefreshBodyObject(body, _Bodies[body.TrackingId]);
-			}
-		}
-		gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.deltaTime * 50.0f);
+		Debug.Log("Not tracking");
+		return Vector3.zero;
 
 	}
+
+
+
+
+
+	/// <summary>
+	/// Returns a vector representing how the person is leaning. This vector is always returned from the first of the tracked objects, 
+	/// regardless of how many objects are tracked. If no object is tracked, this will return the zero vector.
+	/// </summary>
+	/// <returns>The vector representing how the person is leaning.</returns>
+	public Vector3 getLeaningVector() {
+		Kinect.Body[] data = _BodyManager.GetData();
+		if (data == null) {
+			Debug.Log("Not tracking");
+			return Vector3.zero;
+		}
+
+		foreach (var body in data) {
+			if (body == null) {
+				continue;
+			}
+
+			if (body.IsTracked) {
+
+				Kinect.JointType lht = Kinect.JointType.HipLeft;
+				Kinect.JointType ht = Kinect.JointType.Head;
+
+				Kinect.Joint lh = body.Joints [Kinect.JointType.HipLeft];
+				Kinect.Joint h = body.Joints [Kinect.JointType.Head];
+
+				// Get the x and y positions of the left and right hand.
+				float lhy = lh.Position.Y * scale;
+				float hy = h.Position.Y * scale;
+				float lhx = lh.Position.X * scale;
+				float hx = h.Position.X * scale;
+				float lhz = lh.Position.Z * scale;
+				float hz = h.Position.Z * scale;
+
+				// Get the vector between the left and right hand.
+				Vector3 lhVector = new Vector3 (lhx, lhy, lhz);
+				Vector3 hVector = new Vector3 (hx, hy, hz);
+				Vector3 leaningVector = hVector - lhVector;
+
+				return leaningVector;
+			}
+		}
+
+		Debug.Log("Not tracking");
+		return Vector3.zero;
+	}
+
+
+
+
+
+	/// <summary>
+	/// Gets the distance from the left hand to the left shoulder.
+	/// </summary>
+	/// <returns>The distance from the left hand to the left shoulder.</returns>
+	public float getDistanceLeftHandToShoulder() {
+		float distance = getDistanceBetweenJoints (Kinect.JointType.ShoulderLeft, Kinect.JointType.HandLeft);
+		return distance;
+	}
+
+
+
+
+
+	/// <summary>
+	/// Gets the distance from the right hand to the right shoulder.
+	/// </summary>
+	/// <returns>The distance from the right hand to the right shoulder.</returns>
+	public float getDistanceRightHandToShoulder() {
+		float distance = getDistanceBetweenJoints (Kinect.JointType.ShoulderRight, Kinect.JointType.HandRight);
+		return distance;
+	}
+
+
+
+
+
+	/// <summary>
+	/// Gets the distance between two Kinect joints.
+	/// </summary>
+	/// <returns>The distance between two Kinect joints.</returns>
+	public float getDistanceBetweenJoints(Kinect.JointType from, Kinect.JointType to) {
 		
-
-
-	private GameObject CreateBodyObject(ulong id)
-	{
-		GameObject body = new GameObject("Body:" + id);
-
-		Kinect.JointType lht = Kinect.JointType.HandLeft;
-		Kinect.JointType rht = Kinect.JointType.HandRight;
-
-		GameObject lhObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		GameObject rhObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-		LineRenderer lr = lhObj.AddComponent<LineRenderer>();
-		lr.SetVertexCount(2);
-		//lr.material = BoneMaterial;
-		lr.SetWidth(0.05f, 0.05f);
-
-		lhObj.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-		lhObj.name = lht.ToString();
-		lhObj.transform.parent = body.transform;
-
-		rhObj.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-		rhObj.name = rht.ToString();
-		rhObj.transform.parent = body.transform;
-
-		return body;
-	}
-
-
-
-
-
-	private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
-	{
-
-		Kinect.JointType lht = Kinect.JointType.HandLeft;
-		Kinect.JointType rht = Kinect.JointType.HandRight;
-
-		Kinect.Joint lh = body.Joints [Kinect.JointType.HandLeft];
-		Kinect.Joint rh = body.Joints [Kinect.JointType.HandRight];
-		//Debug.Log (lh);
-		//Debug.Log (Mathf.Round(lh.Position.Y * 10) + "     " + Mathf.Round( rh.Position.Y * 10));
-
-		// Kinect coordinates scale.
-		float scale = 100.0f;
-
-		// Get the x and y positions of the left and right hand.
-		float lhy = lh.Position.Y * scale;
-		float rhy = rh.Position.Y * scale;
-		float lhx = lh.Position.X * scale;
-		float rhx = rh.Position.X * scale;
-
-		// Get the amount of tilt between the left and right hand.
-		Vector3 lhVector = new Vector3 (lhx, 0, lhy);
-		Vector3 rhVector = new Vector3 (rhx, 0, rhy);
-		Vector3 tilt = rhVector - lhVector;
-		Vector3 horizontal = new Vector3 (1, 0, 0);
-		angle = Vector3.Angle (horizontal, tilt);
-
-		// Limit the angle.
-		angle = Mathf.Min (angle, limitAngle);
-
-		if(angle < 5.0f) {
-			angle = 0.0f;
+		Kinect.Body[] data = _BodyManager.GetData();
+		if (data == null) {
+			Debug.Log("Not tracking");
+			return 0f;
 		}
 
-		//TODO: Use physics.
+		foreach (var body in data) {
+			if (body == null) {
+				continue;
+			}
 
-		// Rotate the player and tilt the graphics.
-		if(lhy > rhy) {
-			gameObject.transform.Rotate (Vector3.up * Time.deltaTime * angle, Space.World);
-			transform.Find("bird").localEulerAngles = new Vector3(0, 0, -angle);
-		} else {
-			gameObject.transform.Rotate (Vector3.down * Time.deltaTime * angle, Space.World);
-			transform.Find("bird").localEulerAngles = new Vector3(0, 0, angle);
+			if (body.IsTracked) {
+				Kinect.Joint fromJoint = body.Joints [from];
+				Kinect.Joint toJoint = body.Joints [to];
+
+				// Get the x and y positions of the left and right hand.
+				float fromY = fromJoint.Position.Y;
+				float toY = toJoint.Position.Y;
+				float fromX = fromJoint.Position.X;
+				float toX = toJoint.Position.X;
+				float fromZ = fromJoint.Position.Z;
+				float toZ = toJoint.Position.Z;
+
+				// Get the vector between the left and right hand.
+				Vector3 fromVector = new Vector3 (fromX, fromY, fromZ);
+				Vector3 toVector = new Vector3 (toX, toY, toZ);
+				Vector3 lengthVector = toVector - fromVector;
+
+				return lengthVector.magnitude;
+			}
 		}
 
-	}
-
-
-
-
-
-	private static Color GetColorForState(Kinect.TrackingState state)
-	{
-		switch (state)
-		{
-		case Kinect.TrackingState.Tracked:
-			return Color.green;
-
-		case Kinect.TrackingState.Inferred:
-			return Color.red;
-
-		default:
-			return Color.black;
-		}
-	}
-
-
-
-
-
-	private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
-	{
-		return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
+		Debug.Log("Not tracking");
+		return 0f;
 	}
 
 

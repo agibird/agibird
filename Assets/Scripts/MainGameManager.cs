@@ -5,8 +5,10 @@ using UnityEngine;
 public class MainGameManager : MonoBehaviour {
 
 	public bool keyboardInput;
-	public bool kinectInput;
+	public bool useKinectInput;
 	public bool controllerInput;
+
+	public KinectInput kinectInput;
 
 	private List<InputHandler> inputHandlers;
 
@@ -21,8 +23,8 @@ public class MainGameManager : MonoBehaviour {
 		if (keyboardInput) {
 			inputHandlers.Add (new KeyboardInput ());
 		}
-		if (kinectInput) {
-			inputHandlers.Add (new KinectInput ());
+		if (useKinectInput) {
+			inputHandlers.Add (kinectInput);
 		}
 		if (controllerInput) {
 			inputHandlers.Add (new ControllerInput ());

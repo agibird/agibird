@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.5
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2984495, g: 0.31908363, b: 0.33066753, a: 0.5}
+  m_IndirectSpecularColor: {r: 0.2984492, g: 0.31908348, b: 0.3306674, a: 0.5}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -304,9 +304,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1488704380}
   - component: {fileID: 1488704379}
+  - component: {fileID: 1488704381}
   - component: {fileID: 1488704378}
   - component: {fileID: 1488704377}
-  - component: {fileID: 1488704381}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -320,23 +320,24 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1488704376}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d23eabb221c61b49996f2f500d080bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 76b1c1e4e3e6aa547bcfe855669b342e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BodySourceManager: {fileID: 1948598187}
 --- !u!114 &1488704378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1488704376}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76b1c1e4e3e6aa547bcfe855669b342e, type: 3}
+  m_Script: {fileID: 11500000, guid: 87426e5a6fe4e6c469c18faf7aaf14d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BodySourceManager: {fileID: 1948598187}
+  kinectManager: {fileID: 1488704377}
 --- !u!114 &1488704379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,8 +350,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyboardInput: 1
-  kinectInput: 0
+  useKinectInput: 1
   controllerInput: 0
+  kinectInput: {fileID: 1488704378}
 --- !u!4 &1488704380
 Transform:
   m_ObjectHideFlags: 0
