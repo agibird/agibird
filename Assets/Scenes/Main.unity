@@ -304,6 +304,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1488704380}
   - component: {fileID: 1488704381}
+  - component: {fileID: 1488704378}
+  - component: {fileID: 1488704377}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -311,6 +313,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1488704377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1488704376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfb79e732c734fa4bb22f0f96ee175cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BodySourceManager: {fileID: 1948598187}
+--- !u!114 &1488704378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1488704376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 324f46838f7ed9f499eaf95fb310e056, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kinectManager: {fileID: 1488704377}
+  sensitivity: 100
 --- !u!4 &1488704380
 Transform:
   m_ObjectHideFlags: 0

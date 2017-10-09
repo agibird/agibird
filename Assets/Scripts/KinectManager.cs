@@ -9,6 +9,8 @@ public class KinectManager : MonoBehaviour {
 
 	private BodySourceManager _BodyManager;
 
+	private bool isTracking;
+
 	// Kinect coordinate system scale.
 	private float scale = 100.0f;
 
@@ -18,6 +20,7 @@ public class KinectManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		this.isTracking = false;
 		if (BodySourceManager == null) {
 			return;
 		}
@@ -51,6 +54,8 @@ public class KinectManager : MonoBehaviour {
 			}
 
 			if (body.IsTracked) {
+
+				this.isTracking = true;
 
 				Kinect.JointType lht = Kinect.JointType.HandLeft;
 				Kinect.JointType rht = Kinect.JointType.HandRight;
@@ -102,6 +107,8 @@ public class KinectManager : MonoBehaviour {
 			}
 
 			if (body.IsTracked) {
+
+				this.isTracking = true;
 
 				Kinect.JointType lht = Kinect.JointType.HipLeft;
 				Kinect.JointType ht = Kinect.JointType.Head;
@@ -178,6 +185,9 @@ public class KinectManager : MonoBehaviour {
 			}
 
 			if (body.IsTracked) {
+
+				this.isTracking = true;
+
 				Kinect.Joint fromJoint = body.Joints [from];
 				Kinect.Joint toJoint = body.Joints [to];
 
@@ -200,6 +210,14 @@ public class KinectManager : MonoBehaviour {
 
 		Debug.Log("Not tracking");
 		return 0f;
+	}
+
+
+
+
+
+	public bool tracking() {
+		return this.isTracking;
 	}
 
 
