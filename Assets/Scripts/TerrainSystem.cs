@@ -18,12 +18,6 @@ public class TerrainSystem : MonoBehaviour {
 	// The number of tiles in each direction.
 	private int nTiles = 1;
 
-	// The heightmap of the world.
-	private float[,] map;
-
-	// The terrain tiles which constitutes the terrain.
-	private GameObject[,] terrainTiles;
-
 	public Texture2D[] textures;
 
 	public float[] textureTileSize;
@@ -32,10 +26,7 @@ public class TerrainSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		buildTiles ();
-		BuildMap ();
-		BuildTerrain ();
-		BuildTextures ();
+		buildTile (0, 0);
 	}
 	
 	// Update is called once per frame
@@ -48,88 +39,37 @@ public class TerrainSystem : MonoBehaviour {
 
 
 	/// <summary>
-	/// Creates the terrain tiles. Note that this does not set the terrain height data.
+	/// Creates a terrain tile.
 	/// </summary>
-	void buildTiles() {
+	void buildTile(int xPosition, int zPosition) {
 		
-		terrainTiles = new GameObject[nTiles, nTiles];
+		GameObject tile = new GameObject ();
 
-		for (int z = 0; z < nTiles; z++) {
-			for (int x = 0; x < nTiles; x++) {
-				
-				GameObject tile = new GameObject ();
+		// A tile should be a child of the Terrain System object.
+		tile.transform.SetParent (gameObject.transform);
 
-				// Give the tile a name based on its position.
-				tile.name = x + " " + z;
+		// Add the terrain components to the tile.
+		Terrain terrain = tile.AddComponent<Terrain> ();
+		TerrainCollider terrainCollider = tile.AddComponent<TerrainCollider> ();
+		TerrainData terrainData = new TerrainData ();
+		terrain.terrainData = terrainData;
+		terrainCollider.terrainData = terrainData;
 
-				// All tiles should be children of the Terrain System object.
-				tile.transform.SetParent (gameObject.transform);
+		// Apply terrain tile settings.
+		terrainData.heightmapResolution = tileResolution;
+		terrainData.baseMapResolution = 513;
+		terrainData.SetDetailResolution (1024, 32);
+		terrainData.size = new Vector3 (tileSize, tileHeight, tileSize);
 
-				// Add the terrain components to the tile.
-				Terrain terrain = tile.AddComponent<Terrain> ();
-				TerrainCollider terrainCollider = tile.AddComponent<TerrainCollider> ();
-				TerrainData terrainData = new TerrainData ();
-				terrain.terrainData = terrainData;
-				terrainCollider.terrainData = terrainData;
+		// Position the tile in the world.
+		tile.transform.localPosition = new Vector3 (xPosition, 0, zPosition);
 
-				// Apply terrain tile settings.
-				terrainData.heightmapResolution = tileResolution;
-				terrainData.baseMapResolution = 513;
-				terrainData.SetDetailResolution (1024, 32);
-				terrainData.size = new Vector3 (tileSize, tileHeight, tileSize);
+		terrain.basemapDistance = 2000.0f;
 
-				// Position the tile in the world.
-				tile.transform.localPosition = new Vector3 (x * tileSize, 0, z * tileSize);
+		AddHeightData (terrainData);
 
-				terrainTiles [x, z] = tile;
+		BuildTextures (terrainData);
 
-				terrain.basemapDistance = 2000.0f;
-			}
-		}
-
-		// Set each tiles neighbors.
-		for (int z = 0; z < nTiles; z++) {
-			for (int x = 0; x < nTiles; x++) {
-
-				Terrain topNeighbor = null;
-				Terrain leftNeighbor = null;
-				Terrain bottomNeighbor = null;
-				Terrain rightNeighbor = null;
-
-				if(nTiles == 1) {
-					// The tile has no neighbors.
-					terrainTiles [x, z].GetComponent<Terrain> ().SetNeighbors (leftNeighbor, topNeighbor, rightNeighbor, bottomNeighbor);
-					return;
-				}
-
-				if(z == 0) {
-					// The tile has a top neighbor.
-					topNeighbor = terrainTiles [x, z+1].GetComponent<Terrain>();
-				} else if (z == nTiles-1) {
-					// The tile has a bottom neighbor.
-					bottomNeighbor = terrainTiles[x, z-1].GetComponent<Terrain>();
-				} else {
-					// The tile has top and bottom neighbors.
-					topNeighbor = terrainTiles [x, z+1].GetComponent<Terrain>();
-					bottomNeighbor = terrainTiles[x, z-1].GetComponent<Terrain>();
-				}
-
-				if(x == 0) {
-					// The tile has a right neighbor.
-					rightNeighbor = terrainTiles[x+1, z].GetComponent<Terrain>();
-				} else if(x == nTiles-1) {
-					// The tile has a left neighbor
-					leftNeighbor = terrainTiles[x-1, z].GetComponent<Terrain>();
-				} else {
-					// The tile has right and left neighbors.
-					rightNeighbor = terrainTiles[x+1, z].GetComponent<Terrain>();
-					leftNeighbor = terrainTiles[x-1, z].GetComponent<Terrain>();
-				}
-
-				terrainTiles [x, z].GetComponent<Terrain> ().SetNeighbors (leftNeighbor, topNeighbor, rightNeighbor, bottomNeighbor);
-
-			}
-		}
 	}
 
 
@@ -137,28 +77,24 @@ public class TerrainSystem : MonoBehaviour {
 
 
 	/// <summary>
-	/// Legacy map building function. Do not use this.
+	/// Adds height data to a tile.
 	/// </summary>
-	void BuildMapOld() {
-		map = new float[nTiles * tileResolution, nTiles * tileResolution];
-		float octaves = 8;
-		float gain = 0.5f;
-		float lacunarity = 2;
-		float frequency = 18f;
-		float amplitude = 0.5f;
+	/// <param name="terrainData">The object which the height data is added to.</param>
+	void AddHeightData(TerrainData terrainData) {
 
-		for (int i = 0; i < octaves; i++) {
-			for (int z = 0; z < nTiles * tileResolution; z++) {
-				for (int x = 0; x < nTiles * tileResolution; x++) {
-					float xx = (float)x / (float)map.GetLength (0);
-					float zz = (float)z / (float)map.GetLength (1);
-					map [x, z] += Mathf.PerlinNoise (xx * frequency, zz * frequency) * amplitude;
-				}
+		// Get the old height data from the tile.
+		float[,] heights = terrainData.GetHeights (0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+
+		float[,] heightData = BuildMap(terrainData.heightmapWidth, terrainData.heightmapHeight);
+
+		// Add height data from the world map to the tile.
+		for (int z = 0; z < terrainData.heightmapHeight; z++) {
+			for (int x = 0; x < terrainData.heightmapWidth; x++) {
+				// Note. X and z are supposed to be switched, in order to map the tiles correctly.
+				heights [x, z] = heightData[z, x];
 			}
-			frequency *= lacunarity;
-			amplitude *= gain;
 		}
-
+		terrainData.SetHeights (0, 0, heights);
 	}
 
 
@@ -168,9 +104,9 @@ public class TerrainSystem : MonoBehaviour {
 	/// <summary>
 	/// Builds the height map.
 	/// </summary>
-	void BuildMap() {
+	float[,] BuildMap(int width, int height) {
 		
-		map = new float[nTiles * tileResolution, nTiles * tileResolution];
+		float[,] heightData = new float[width, height];
 
 		// Number of "passes".
 		float octaves = 9;
@@ -194,15 +130,15 @@ public class TerrainSystem : MonoBehaviour {
 				float centreSize = 1000;
 
 				if( (x < xResolution / 2) && (z < xResolution - x) && (z > x) ) {
-					map [x, z] = ((xResolution / 2) - centreSize - x) / tileHeight;
+					heightData [x, z] = ((xResolution / 2) - centreSize - x) / tileHeight;
 				} else if ( (x > xResolution / 2) && (z > xResolution - x) && (z < x)) {
-					map [x, z] = ((xResolution / 2) - xResolution - centreSize + x) / tileHeight;
+					heightData [x, z] = ((xResolution / 2) - xResolution - centreSize + x) / tileHeight;
 				}  
 
 				if( (z < zResolution / 2) && (x <= xResolution - z) && (x >= z) ) {
-					map [x, z] = ((zResolution / 2) - centreSize - z) / tileHeight;
+					heightData [x, z] = ((zResolution / 2) - centreSize - z) / tileHeight;
 				} else if((z > zResolution / 2) && (x >= xResolution - z) && (x <= z) ) {
-					map [x, z] = ((zResolution / 2) - xResolution - centreSize + z) / tileHeight;
+					heightData [x, z] = ((zResolution / 2) - xResolution - centreSize + z) / tileHeight;
 				}
 
 			}
@@ -212,7 +148,7 @@ public class TerrainSystem : MonoBehaviour {
 		for (int i = 0; i < octaves; i++) {
 			for (int z = 0; z < nTiles * tileResolution; z++) {
 				for (int x = 0; x < nTiles * tileResolution; x++) {
-					map [x, z] += Mathf.PerlinNoise ((float)x * frequency, (float)z * frequency) * amplitude;
+					heightData [x, z] += Mathf.PerlinNoise ((float)x * frequency, (float)z * frequency) * amplitude;
 				}
 			}
 			frequency *= lacunarity;
@@ -222,53 +158,13 @@ public class TerrainSystem : MonoBehaviour {
 		// Make the valleys more smooth.
 		for (int z = 0; z < nTiles * tileResolution; z++) {
 			for (int x = 0; x < nTiles * tileResolution; x++) {
-				map [x, z] = Mathf.Pow (map [x, z], 2.8f);
+				heightData [x, z] = Mathf.Pow (heightData [x, z], 2.8f);
 			}
 		}
 
 		Debug.Log ("Map resolution: " + nTiles * tileResolution);
-	}
 
-
-
-
-
-	/// <summary>
-	/// Adds height data to all tiles.
-	/// </summary>
-	void BuildTerrain() {
-		for (int z = 0; z < nTiles; z++) {
-			for (int x = 0; x < nTiles; x++) {
-				AddTileHeight ((TerrainData)terrainTiles [x, z].GetComponent<Terrain>().terrainData, x, z);
-			}
-		}
-	}
-
-
-
-
-
-	/// <summary>
-	/// Adds height data from the world map to a tile.
-	/// </summary>
-	/// <param name="terrainData">The object which the height data is added to.</param>
-	/// <param name="xTileNumber">Tile number in the x direction.</param>
-	/// <param name="zTileNumber">Tile number in the z direction.</param>
-	void AddTileHeight(TerrainData terrainData, int xTileNumber, int zTileNumber) {
-
-		// Get the old height data from the tile.
-		float[,] heights = terrainData.GetHeights (0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
-
-		//TODO: Fix the terrain seams.
-
-		// Add height data from the world map to the tile.
-		for (int z = 0; z < terrainData.heightmapHeight; z++) {
-			for (int x = 0; x < terrainData.heightmapWidth; x++) {
-				// Note. X and z are supposed to be switched, in order to map the tiles correctly.
-				heights [x, z] = map [(xTileNumber * tileResolution) + z, (zTileNumber * tileResolution) + x];
-			}
-		}
-		terrainData.SetHeights (0, 0, heights);
+		return heightData;
 	}
 
 
@@ -278,7 +174,7 @@ public class TerrainSystem : MonoBehaviour {
 	/// <summary>
 	/// Builds the terrain texture structures.
 	/// </summary>
-	void BuildTextures() {
+	void BuildTextures(TerrainData terrainData) {
 
 		SplatPrototype[] splatPrototypes = new SplatPrototype[textures.Length];
 
@@ -291,12 +187,9 @@ public class TerrainSystem : MonoBehaviour {
 		}
 
 		// Add the textures and normal maps to each tile.
-		for (int z = 0; z < nTiles; z++) {
-			for (int x = 0; x < nTiles; x++) {
-				terrainTiles [x, z].GetComponent<Terrain> ().terrainData.splatPrototypes = splatPrototypes;
-				ApplyTextures (terrainTiles [x, z].GetComponent<Terrain> ().terrainData);
-			}
-		}
+
+		terrainData.splatPrototypes = splatPrototypes;
+		ApplyTextures (terrainData);
 
 	}
 
