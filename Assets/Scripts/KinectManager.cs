@@ -44,7 +44,7 @@ public class KinectManager : MonoBehaviour {
 		
 		Kinect.Body[] data = _BodyManager.GetData();
 		if (data == null) {
-			Debug.Log("Not tracking");
+			//Debug.Log("Not tracking");
 			return Vector3.zero;
 		}
 
@@ -80,7 +80,7 @@ public class KinectManager : MonoBehaviour {
 			}
 		}
 
-		Debug.Log("Not tracking");
+		//Debug.Log("Not tracking");
 		return Vector3.zero;
 
 	}
@@ -97,7 +97,7 @@ public class KinectManager : MonoBehaviour {
 	public Vector3 getLeaningVector() {
 		Kinect.Body[] data = _BodyManager.GetData();
 		if (data == null) {
-			Debug.Log("Not tracking");
+			//Debug.Log("Not tracking");
 			return Vector3.zero;
 		}
 
@@ -133,7 +133,7 @@ public class KinectManager : MonoBehaviour {
 			}
 		}
 
-		Debug.Log("Not tracking");
+		//Debug.Log("Not tracking");
 		return Vector3.zero;
 	}
 
@@ -175,7 +175,7 @@ public class KinectManager : MonoBehaviour {
 		
 		Kinect.Body[] data = _BodyManager.GetData();
 		if (data == null) {
-			Debug.Log("Not tracking");
+			//Debug.Log("Not tracking");
 			return 0f;
 		}
 
@@ -208,7 +208,7 @@ public class KinectManager : MonoBehaviour {
 			}
 		}
 
-		Debug.Log("Not tracking");
+		//Debug.Log("Not tracking");
 		return 0f;
 	}
 

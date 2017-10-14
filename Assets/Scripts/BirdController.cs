@@ -19,7 +19,7 @@ public class BirdController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		Debug.Log (kinectManager.tracking ());
+		//Debug.Log (kinectManager.tracking ());
 
 		Vector3 vectorBetweenHands = kinectManager.getVectorBetweenHands ();
 		Vector3 horizontal = new Vector3 (vectorBetweenHands.x, 0, vectorBetweenHands.z);
@@ -37,10 +37,11 @@ public class BirdController : MonoBehaviour {
 			leaning *= -1;
 		}
 
-		if(kinectManager.tracking()) {
+		if (kinectManager.tracking ()) {
 			gameObject.GetComponent<Rigidbody> ().MoveRotation (direction * transform.rotation);
 			transform.Find ("bird").localEulerAngles = new Vector3 (0f, 0f, angle);
-			gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.fixedDeltaTime * 12.0f);
 		}
+			gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.fixedDeltaTime * 12.0f);
+
 	}
 }

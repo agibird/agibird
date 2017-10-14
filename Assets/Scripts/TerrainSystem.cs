@@ -10,10 +10,10 @@ public class TerrainSystem : MonoBehaviour {
 	private int tileResolution = 4097;
 
 	// The size of each tile in world space.
-	private float tileSize = 4097;
+	private float tileSize = 1000;
 
 	// The height of each tile in world space.
-	float tileHeight = 4096;
+	float tileHeight = 250;
 
 	// The number of tiles in each direction.
 	private int nTiles = 1;
@@ -23,6 +23,8 @@ public class TerrainSystem : MonoBehaviour {
 	public float[] textureTileSize;
 
 	public Texture2D[] normalMaps;
+
+	public GameObject tree;
 
 	// Use this for initialization
 	void Start () {
@@ -69,6 +71,8 @@ public class TerrainSystem : MonoBehaviour {
 		AddHeightData (terrainData);
 
 		BuildTextures (terrainData);
+
+		addTrees (terrain);
 
 	}
 
@@ -118,10 +122,11 @@ public class TerrainSystem : MonoBehaviour {
 		float lacunarity = 2;
 
 		// Initial settings.
-		float frequency = 0.001f;
-		float amplitude = 0.45f;
+		float frequency = 0.002f;
+		float amplitude = 0.6f;
 
 		// Raise the terrain at the rim.
+		/*
 		for (int z = 0; z < nTiles * tileResolution; z++) {
 			for (int x = 0; x < nTiles * tileResolution; x++) {
 
@@ -143,6 +148,19 @@ public class TerrainSystem : MonoBehaviour {
 
 			}
 		}
+		*/
+
+		float xcenter = (float)width / 2f;
+		float zcenter = (float)height / 2f;
+
+		for (int z = 0; z < width; z++) {
+			for (int x = 0; x < height; x++) {
+				float xnorm = (float)x / (float)width;
+				float znorm = (float)z / (float)height;
+				heightData [x, z] = 1.0f -5*(Mathf.Pow(0.5f - xnorm, 2) + Mathf.Pow(0.5f - znorm, 2));
+			}
+		}
+
 
 		// Build the initial height map.
 		for (int i = 0; i < octaves; i++) {
@@ -159,6 +177,26 @@ public class TerrainSystem : MonoBehaviour {
 		for (int z = 0; z < nTiles * tileResolution; z++) {
 			for (int x = 0; x < nTiles * tileResolution; x++) {
 				heightData [x, z] = Mathf.Pow (heightData [x, z], 2.8f);
+			}
+		}
+
+		float value = 0f;
+
+		for (int z = 0; z < width; z++) {
+			for (int x = 0; x < height; x++) {
+				//value = Mathf.Max (value, heightData [x, z]);
+				if(heightData[x, z] > value) {
+					value = heightData[x, z];
+				}
+			}
+		}
+
+		for (int z = 0; z < width; z++) {
+			for (int x = 0; x < height; x++) {
+				heightData [x, z] /= value;
+				if(heightData[x, z] > 1) {
+					Debug.LogError("Height data value error");
+				}
 			}
 		}
 
@@ -224,10 +262,67 @@ public class TerrainSystem : MonoBehaviour {
 				// Apply less snow and more mountain texture to steep areas.
 				splatMaps [alphaX, alphaZ, 0] = 1 - steepness;
 				splatMaps [alphaX, alphaZ, 1] = steepness;
+
+				if(terrainData.GetInterpolatedHeight(x, z) < 5.0f) {
+					splatMaps [alphaX, alphaZ, 1] = 0f;
+					splatMaps [alphaX, alphaZ, 0] = terrainData.GetInterpolatedHeight (x, z) / 5.0f;
+					splatMaps [alphaX, alphaZ, 2] = 1.0f - (terrainData.GetInterpolatedHeight (x, z) / 5.0f);
+				}
 			}
 		}
 
 		terrainData.SetAlphamaps (0, 0, splatMaps);
+	}
+
+
+
+
+
+	void addTrees(Terrain terrain) {
+
+		TerrainData terrainData = terrain.terrainData;
+
+		List<TreePrototype> treePrototypes = new List<TreePrototype> (terrainData.treePrototypes);
+
+		TreePrototype treePrototype = new TreePrototype ();
+		treePrototype.prefab = tree;
+		treePrototype.bendFactor = 0f;
+
+		treePrototypes.Add (treePrototype);
+
+		terrainData.treePrototypes = treePrototypes.ToArray();
+
+		Debug.Log (terrainData.treePrototypes.Length);
+
+		int scale = 50;
+
+		for (int y = 0; y < scale; y++) {
+			for (int x = 0; x < scale; x++) {
+
+				float ymap = (float)y / (float) scale;
+				float xmap = (float)x / (float) scale;
+
+				float mapHeight = terrainData.GetInterpolatedHeight (xmap, ymap);
+				float angle = terrainData.GetSteepness (xmap, ymap);
+				float steepness = angle / 90.0f;
+
+				if(mapHeight > 5.0f && mapHeight < 50.0f &&steepness < 0.5f) {
+
+					TreeInstance treeInstance = new TreeInstance ();
+					treeInstance.prototypeIndex = 0;
+					Vector3 position = new Vector3 (xmap, 0f, ymap);
+					position.y = mapHeight;
+					treeInstance.position = position;
+					treeInstance.color = Color.green;
+					treeInstance.heightScale = Random.Range (0.5f, 1.5f);
+					treeInstance.lightmapColor = Color.white;
+					treeInstance.widthScale = 1.0f;
+
+					terrain.AddTreeInstance (treeInstance);
+				}
+			}
+		}
+
 	}
 
 
