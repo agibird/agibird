@@ -327,14 +327,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.4, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c501e784d6112d84fa1be88dbe94b6d1, type: 3}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -831,8 +831,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0.4, b: 0, a: 1}
-    m_HighlightedColor: {r: 0, g: 0.6, b: 0, a: 1}
+    m_NormalColor: {r: 0, g: 0.74509805, b: 0.566, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.75963163, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -872,7 +872,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 24e0ec96337479246ac5757921a0d743, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e13c1eeba61a4ef4cb763b4514159922, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1662,8 +1662,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0.4, b: 0, a: 1}
-    m_HighlightedColor: {r: 0, g: 0.6, b: 0, a: 1}
+    m_NormalColor: {r: 0, g: 0.74509805, b: 0.566, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.75963163, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -1725,7 +1725,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 24e0ec96337479246ac5757921a0d743, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e13c1eeba61a4ef4cb763b4514159922, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2267,7 +2267,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 125, y: -357.50256}
-  m_SizeDelta: {x: 59, y: 23.630953}
+  m_SizeDelta: {x: 250, y: 23.630953}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1563169072
 MonoBehaviour:
@@ -2299,9 +2299,9 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Move your arms vertically to tilt the bird.
 --- !u!222 &1563169073
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2438,8 +2438,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0.4, b: 0, a: 1}
-    m_HighlightedColor: {r: 0, g: 0.6, b: 0, a: 1}
+    m_NormalColor: {r: 0, g: 0.74509805, b: 0.566, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.75963163, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -2490,7 +2490,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 24e0ec96337479246ac5757921a0d743, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e13c1eeba61a4ef4cb763b4514159922, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2537,7 +2537,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 125, y: -357.50256}
-  m_SizeDelta: {x: 59, y: 23.630953}
+  m_SizeDelta: {x: 250, y: 23.630953}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1616923288
 MonoBehaviour:
@@ -2569,9 +2569,9 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Move your hands closer to you to increase the bird's speed.
 --- !u!222 &1616923289
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2728,8 +2728,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0.4, b: 0, a: 1}
-    m_HighlightedColor: {r: 0, g: 0.6, b: 0, a: 1}
+    m_NormalColor: {r: 0, g: 0.74509805, b: 0.566, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.75963163, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -2769,7 +2769,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 24e0ec96337479246ac5757921a0d743, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e13c1eeba61a4ef4cb763b4514159922, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3003,8 +3003,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0.4, b: 0, a: 1}
-    m_HighlightedColor: {r: 0, g: 0.6, b: 0, a: 1}
+    m_NormalColor: {r: 0, g: 0.74509805, b: 0.566, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.75963163, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -3077,7 +3077,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 24e0ec96337479246ac5757921a0d743, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e13c1eeba61a4ef4cb763b4514159922, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3233,7 +3233,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 125, y: -357.50256}
-  m_SizeDelta: {x: 59, y: 23.630953}
+  m_SizeDelta: {x: 250, y: 23.630953}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1913102630
 MonoBehaviour:
@@ -3265,9 +3265,9 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Lean forward or backward to make the bird go down or up.
 --- !u!222 &1913102631
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3330,8 +3330,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0.4, b: 0, a: 1}
-    m_HighlightedColor: {r: 0, g: 0.6, b: 0, a: 1}
+    m_NormalColor: {r: 0, g: 0.74509805, b: 0.566, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.75963163, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -3393,7 +3393,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 24e0ec96337479246ac5757921a0d743, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e13c1eeba61a4ef4cb763b4514159922, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
