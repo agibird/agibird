@@ -8,6 +8,8 @@ public class SceneLoader : MonoBehaviour {
 
 	public Slider slider;
 
+	public GameObject loader;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -28,7 +30,8 @@ public class SceneLoader : MonoBehaviour {
 
 		while(ao.isDone == false) {
 			float prog = ao.progress;
-			slider.value = prog;
+			//slider.value = prog;
+			loader.GetComponent<Image> ().fillAmount = prog;
 			Debug.Log (prog);
 			yield return null;
 		}
