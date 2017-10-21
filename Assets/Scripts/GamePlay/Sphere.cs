@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Sphere : MonoBehaviour {
 
+	// The starting position of the sphere.
 	private float position;
 
+	// Position offset.
 	private float add;
 
 	// Use this for initialization
@@ -13,15 +15,6 @@ public class Sphere : MonoBehaviour {
 		position = transform.position.y;
 		add = Random.Range (0f, 5.0f);
 		StartCoroutine (hover ());
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	void FixedUpdate() {
-
 	}
 
 	IEnumerator hover() {

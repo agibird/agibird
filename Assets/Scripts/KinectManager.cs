@@ -9,6 +9,7 @@ public class KinectManager : MonoBehaviour {
 
 	private BodySourceManager _BodyManager;
 
+	// Whether the Kinect is tracking an object.
 	private bool isTracking;
 
 	// Kinect coordinate system scale.

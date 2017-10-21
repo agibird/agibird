@@ -6,21 +6,18 @@ using UnityEngine.UI;
 
 public class ButtonText : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
+	// The button text.
 	private Text text;
 
+	// The normal button colour.
 	public Color NormalColor;
 
+	// The button highlight colour.
 	public Color HighlightedColor;
 
 	// Use this for initialization
 	void Start () {
 		text = gameObject.GetComponentInChildren<Text> ();
-		//text.color = NormalColor;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void OnPointerEnter(PointerEventData pointerEventData) {

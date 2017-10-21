@@ -9,26 +9,31 @@ public class SceneLoader : MonoBehaviour {
 	// The game object which has the loader graphics.
 	public GameObject loader;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-	// Load the main scene.
+
+
+
+	/// <summary>
+	/// Starts the game by loading the main scene.
+	/// </summary>
 	public void startGame() {
 		StartCoroutine (loadScene ("Main"));
 	}
 
 
-	// Load the main menu.
+
+
+
+	/// <summary>
+	/// Loads the main menu.
+	/// </summary>
 	public void loadMainMenu() {
 		StartCoroutine(loadScene("MainMenu"));
 	}
+
+
+
+
 
 	IEnumerator loadScene(string scene) {
 
@@ -46,9 +51,14 @@ public class SceneLoader : MonoBehaviour {
 		yield return null;
 	}
 
-	// Quit the game.
-	public void quitGame() {
 
+
+
+
+	/// <summary>
+	/// Quits the game.
+	/// </summary>
+	public void quitGame() {
 		#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 		#else

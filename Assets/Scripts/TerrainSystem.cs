@@ -31,11 +31,6 @@ public class TerrainSystem : MonoBehaviour {
 		buildTile (0, 0);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 
 
 

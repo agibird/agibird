@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Bird controller. This is only used for testing and should be replaced with the "bird physics system".
+/// </summary>
+
 public class BirdController : MonoBehaviour {
 
 	public KinectManager kinectManager;
@@ -19,7 +23,6 @@ public class BirdController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		//Debug.Log (kinectManager.tracking ());
 
 		Vector3 vectorBetweenHands = kinectManager.getVectorBetweenHands ();
 		Vector3 horizontal = new Vector3 (vectorBetweenHands.x, 0, vectorBetweenHands.z);

@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class Speed : MonoBehaviour {
 
+	// The player.
 	public GameObject player;
 
+	// The UI text which displays the speed.
 	private Text text;
 
 	// Use this for initialization

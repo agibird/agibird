@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Used to display the player orientation on the compass.
+/// </summary>
+
 public class Compass : MonoBehaviour {
 
+	// The player.
 	public GameObject player;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		float value = -player.transform.eulerAngles.y;
