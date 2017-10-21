@@ -41,7 +41,8 @@ public class BirdController : MonoBehaviour {
 			gameObject.GetComponent<Rigidbody> ().MoveRotation (direction * transform.rotation);
 			transform.Find ("bird").localEulerAngles = new Vector3 (0f, 0f, angle);
 		}
-			gameObject.GetComponent<Rigidbody> ().MovePosition (transform.position + transform.forward * Time.fixedDeltaTime * 12.0f);
+
+		gameObject.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 8.0f);
 
 	}
 }

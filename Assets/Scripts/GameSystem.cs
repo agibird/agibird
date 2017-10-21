@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSystem : MonoBehaviour {
 
@@ -8,18 +9,29 @@ public class GameSystem : MonoBehaviour {
 
 	public GameObject player;
 
+	public GameObject uiTimer;
+
+	public GameObject endRoundPanel;
+
 	static private int nSpheres = 16;
 
 	private Transform[] spheres = new Transform[nSpheres];
 
+	private float startTime;
+
+	// The available play time.
+	private float playTime = 2.0f * 1.0f;
+
 	// Use this for initialization
 	void Start () {
+		Time.timeScale = 1.0f;
+		startTime = Time.time;
 		createSpheres ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		checkTime ();
 	}
 
 	private void createSpheres() {
@@ -35,5 +47,29 @@ public class GameSystem : MonoBehaviour {
 
 			spheres[i] = Instantiate (sphere, spherePosition, Quaternion.identity);
 		}
+	}
+
+	/// <summary>
+	/// Checks if there is any playtime remaining.
+	/// </summary>
+	private void checkTime() {
+		float usedTime = Time.time - startTime;
+		float remainingTime = playTime - usedTime;
+
+		if(remainingTime <= 0f) {
+			Time.timeScale = 0f;
+			endRoundPanel.SetActive (true);
+			//endGame ();
+		}
+
+		updateUITimer (remainingTime);
+	}
+
+	/// <summary>
+	/// Updates the user interface timer.
+	/// </summary>
+	/// <param name="time">Time.</param>
+	private void updateUITimer(float time) {
+		uiTimer.GetComponent<Text> ().text = "Time: " + Mathf.CeilToInt(time).ToString ();
 	}
 }

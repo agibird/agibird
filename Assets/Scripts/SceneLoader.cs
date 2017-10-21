@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 public class SceneLoader : MonoBehaviour {
 
-	public Slider slider;
-
+	// The game object which has the loader graphics.
 	public GameObject loader;
 
 	// Use this for initialization
@@ -20,25 +19,34 @@ public class SceneLoader : MonoBehaviour {
 		
 	}
 
+	// Load the main scene.
 	public void startGame() {
-		StartCoroutine (loadScene ());
+		StartCoroutine (loadScene ("Main"));
 	}
 
-	IEnumerator loadScene() {
 
-		AsyncOperation ao = SceneManager.LoadSceneAsync ("Main");
+	// Load the main menu.
+	public void loadMainMenu() {
+		StartCoroutine(loadScene("MainMenu"));
+	}
+
+	IEnumerator loadScene(string scene) {
+
+		AsyncOperation ao = SceneManager.LoadSceneAsync (scene);
 
 		while(ao.isDone == false) {
 			float prog = ao.progress;
 			//slider.value = prog;
-			loader.GetComponent<Image> ().fillAmount = prog;
-			Debug.Log (prog);
+			if (loader != null) {
+				loader.GetComponent<Image> ().fillAmount = prog;
+			}
 			yield return null;
 		}
 
 		yield return null;
 	}
 
+	// Quit the game.
 	public void quitGame() {
 
 		#if UNITY_EDITOR
