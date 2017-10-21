@@ -103,4 +103,28 @@ public class GameSystem : MonoBehaviour {
 	private void updateUITimer(float time) {
 		uiTimer.GetComponent<Text> ().text = "Time: " + Mathf.CeilToInt(time).ToString ();
 	}
+
+
+
+
+
+	/// <summary>
+	/// Resets the player's points.
+	/// </summary>
+	private void resetPoints() {
+		PlayerPrefs.SetInt ("Player Score", 0);
+	}
+
+
+
+
+
+	/// <summary>
+	/// Adds "number" player points.
+	/// </summary>
+	public void addPoints(int number) {
+		int currentPoints = PlayerPrefs.GetInt ("Player Score");
+		PlayerPrefs.SetInt ("Player Score", currentPoints + number);
+	}
+
 }
