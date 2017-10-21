@@ -1433,15 +1433,15 @@ MonoBehaviour:
   theCamera: {fileID: 0}
   textures:
   - {fileID: 2800000, guid: c6e0767b1f8c34890ac245217f4b9731, type: 3}
-  - {fileID: 2800000, guid: d29cea24b6eeb4044adb6394357a728f, type: 3}
-  - {fileID: 2800000, guid: 0fc52d060a27696438fcba821b4edb5a, type: 3}
+  - {fileID: 2800000, guid: 5fef9a76b874bf44fb47dcf7494eff58, type: 3}
+  - {fileID: 2800000, guid: e1ea84ed59653694fb17116850865320, type: 3}
   textureTileSize:
   - 500
-  - 500
-  - 500
+  - 25
+  - 25
   normalMaps:
   - {fileID: 2800000, guid: 4f46b7932987dde49bce4faeb0a9ec3d, type: 3}
-  - {fileID: 2800000, guid: 26e8eb12de4c8ee4196b2b4628fb588e, type: 3}
+  - {fileID: 2800000, guid: 35f5e8466ced7bd4680ccef7ea640f08, type: 3}
   - {fileID: 2800000, guid: 26e8eb12de4c8ee4196b2b4628fb588e, type: 3}
   tree: {fileID: 114418, guid: 8b2d47fdc2e25ac4f9721480a68bbefa, type: 2}
 --- !u!4 &1520377686
@@ -1488,7 +1488,6 @@ MonoBehaviour:
   player: {fileID: 1488704376}
   uiTimer: {fileID: 1788156714}
   endRoundPanel: {fileID: 2101473326}
-  sceneLoader: {fileID: 741945601}
 --- !u!4 &1530457169
 Transform:
   m_ObjectHideFlags: 0

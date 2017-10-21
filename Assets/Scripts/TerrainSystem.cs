@@ -69,6 +69,9 @@ public class TerrainSystem : MonoBehaviour {
 
 		addTrees (terrain);
 
+		terrain.treeBillboardDistance = 150.0f;
+		terrain.treeCrossFadeLength = 100.0f;
+
 	}
 
 
@@ -309,7 +312,7 @@ public class TerrainSystem : MonoBehaviour {
 					position.y = mapHeight;
 					treeInstance.position = position;
 					treeInstance.color = Color.green;
-					treeInstance.heightScale = Random.Range (0.5f, 1.5f);
+					treeInstance.heightScale = Random.Range (0.5f, 1.9f);
 					treeInstance.lightmapColor = Color.white;
 					treeInstance.widthScale = 1.0f;
 

@@ -28,7 +28,7 @@ public class GameSystem : MonoBehaviour {
 	private float startTime;
 
 	// The available play time.
-	private float playTime = 2.0f * 1.0f;
+	private float playTime = 2.0f * 60.0f;
 
 
 
