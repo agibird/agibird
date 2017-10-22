@@ -153,10 +153,10 @@ QualitySettings:
     shadowResolution: 2
     shadowProjection: 1
     shadowCascades: 4
-    shadowDistance: 10000
+    shadowDistance: 500
     shadowNearPlaneOffset: 3
     shadowCascade2Split: 0.33333334
-    shadowCascade4Split: {x: 0.01629358, y: 0.13843285, z: 0.46666723}
+    shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
     shadowmaskMode: 1
     blendWeights: 4
     textureQuality: 0
@@ -175,19 +175,4 @@ QualitySettings:
     resolutionScalingFixedDPIFactor: 1
     excludedTargetPlatforms: []
   m_PerPlatformDefaultQuality:
-    Android: 2
-    Nintendo 3DS: 5
-    Nintendo Switch: 5
-    PS4: 5
-    PSM: 5
-    PSP2: 2
-    Samsung TV: 2
-    Standalone: 5
-    Tizen: 2
-    Web: 5
-    WebGL: 3
-    WiiU: 5
-    Windows Store Apps: 5
-    XboxOne: 5
-    iPhone: 2
-    tvOS: 2
+    Standalone: 0

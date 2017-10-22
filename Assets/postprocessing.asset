@@ -83,7 +83,7 @@ MonoBehaviour:
       sampleCount: 10
       frameBlending: 1
   eyeAdaptation:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       lowPercent: 45
       highPercent: 95
@@ -109,7 +109,7 @@ MonoBehaviour:
         texture: {fileID: 0}
         intensity: 3
   colorGrading:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       tonemapping:
         tonemapper: 1
@@ -293,7 +293,7 @@ MonoBehaviour:
       size: 1
       luminanceContribution: 0.8
   vignette:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
@@ -305,7 +305,7 @@ MonoBehaviour:
       opacity: 1
       rounded: 0
   dithering:
-    m_Enabled: 1
+    m_Enabled: 0
   monitors:
     currentMonitorID: 0
     refreshOnPlay: 0

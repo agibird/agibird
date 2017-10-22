@@ -69,7 +69,7 @@ public class TerrainSystem : MonoBehaviour {
 
 		addTrees (terrain);
 
-		terrain.treeBillboardDistance = 150.0f;
+		terrain.treeBillboardDistance = 500.0f;
 		terrain.treeCrossFadeLength = 100.0f;
 
 	}
