@@ -1444,6 +1444,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 35f5e8466ced7bd4680ccef7ea640f08, type: 3}
   - {fileID: 2800000, guid: 26e8eb12de4c8ee4196b2b4628fb588e, type: 3}
   tree: {fileID: 114418, guid: 8b2d47fdc2e25ac4f9721480a68bbefa, type: 2}
+  grass: {fileID: 2800000, guid: d6cdc79ec19714fcd980ca3f6ac01a0a, type: 3}
 --- !u!4 &1520377686
 Transform:
   m_ObjectHideFlags: 0

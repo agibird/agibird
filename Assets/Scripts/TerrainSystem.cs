@@ -26,6 +26,8 @@ public class TerrainSystem : MonoBehaviour {
 
 	public GameObject tree;
 
+	public Texture2D grass;
+
 	// Use this for initialization
 	void Start () {
 		buildTile (0, 0);
@@ -63,14 +65,21 @@ public class TerrainSystem : MonoBehaviour {
 
 		terrain.basemapDistance = 2000.0f;
 
+		terrain.castShadows = true;
+
+		terrain.treeBillboardDistance = 500.0f;
+		terrain.treeCrossFadeLength = 100.0f;
+		terrain.treeDistance = 1000.0f;
+
+		terrain.detailObjectDistance = 500.0f;
+
 		AddHeightData (terrainData);
 
 		BuildTextures (terrainData);
 
-		addTrees (terrain);
+		AddTrees (terrain);
 
-		terrain.treeBillboardDistance = 500.0f;
-		terrain.treeCrossFadeLength = 100.0f;
+		AddGrass (terrain);
 
 	}
 
@@ -123,34 +132,7 @@ public class TerrainSystem : MonoBehaviour {
 		float frequency = 0.002f;
 		float amplitude = 0.6f;
 
-		// Raise the terrain at the rim.
-		/*
-		for (int z = 0; z < nTiles * tileResolution; z++) {
-			for (int x = 0; x < nTiles * tileResolution; x++) {
-
-				float xResolution = nTiles * tileResolution;
-				float zResolution = nTiles * tileResolution;
-				float centreSize = 1000;
-
-				if( (x < xResolution / 2) && (z < xResolution - x) && (z > x) ) {
-					heightData [x, z] = ((xResolution / 2) - centreSize - x) / tileHeight;
-				} else if ( (x > xResolution / 2) && (z > xResolution - x) && (z < x)) {
-					heightData [x, z] = ((xResolution / 2) - xResolution - centreSize + x) / tileHeight;
-				}  
-
-				if( (z < zResolution / 2) && (x <= xResolution - z) && (x >= z) ) {
-					heightData [x, z] = ((zResolution / 2) - centreSize - z) / tileHeight;
-				} else if((z > zResolution / 2) && (x >= xResolution - z) && (x <= z) ) {
-					heightData [x, z] = ((zResolution / 2) - xResolution - centreSize + z) / tileHeight;
-				}
-
-			}
-		}
-		*/
-
-		float xcenter = (float)width / 2f;
-		float zcenter = (float)height / 2f;
-
+		// Add island mask.
 		for (int z = 0; z < width; z++) {
 			for (int x = 0; x < height; x++) {
 				float xnorm = (float)x / (float)width;
@@ -159,8 +141,7 @@ public class TerrainSystem : MonoBehaviour {
 			}
 		}
 
-
-		// Build the initial height map.
+		// Add mountains.
 		for (int i = 0; i < octaves; i++) {
 			for (int z = 0; z < nTiles * tileResolution; z++) {
 				for (int x = 0; x < nTiles * tileResolution; x++) {
@@ -178,8 +159,8 @@ public class TerrainSystem : MonoBehaviour {
 			}
 		}
 
+		// Normalise the height data.
 		float value = 0f;
-
 		for (int z = 0; z < width; z++) {
 			for (int x = 0; x < height; x++) {
 				//value = Mathf.Max (value, heightData [x, z]);
@@ -188,7 +169,6 @@ public class TerrainSystem : MonoBehaviour {
 				}
 			}
 		}
-
 		for (int z = 0; z < width; z++) {
 			for (int x = 0; x < height; x++) {
 				heightData [x, z] /= value;
@@ -197,8 +177,6 @@ public class TerrainSystem : MonoBehaviour {
 				}
 			}
 		}
-
-		Debug.Log ("Map resolution: " + nTiles * tileResolution);
 
 		return heightData;
 	}
@@ -276,24 +254,30 @@ public class TerrainSystem : MonoBehaviour {
 
 
 
-	void addTrees(Terrain terrain) {
+	/// <summary>
+	/// Adds trees to the terrain. The trees are placed based on the terrain height.
+	/// </summary>
+	void AddTrees(Terrain terrain) {
 
 		TerrainData terrainData = terrain.terrainData;
 
+		// Get the tree prototypes.
 		List<TreePrototype> treePrototypes = new List<TreePrototype> (terrainData.treePrototypes);
 
+		// Create a new tree prototype.
 		TreePrototype treePrototype = new TreePrototype ();
 		treePrototype.prefab = tree;
 		treePrototype.bendFactor = 0f;
 
+		// Add the new tree prototype to the terrain.
 		treePrototypes.Add (treePrototype);
-
 		terrainData.treePrototypes = treePrototypes.ToArray();
 
 		Debug.Log (terrainData.treePrototypes.Length);
 
 		int scale = 50;
 
+		// Place trees in the terrain.
 		for (int y = 0; y < scale; y++) {
 			for (int x = 0; x < scale; x++) {
 
@@ -320,6 +304,69 @@ public class TerrainSystem : MonoBehaviour {
 				}
 			}
 		}
+
+	}
+
+
+
+
+
+	/// <summary>
+	/// Adds grass to the terrain. The grass is place based on the terrain textures.
+	/// </summary>
+	/// <param name="terrain">Terrain.</param>
+	void AddGrass(Terrain terrain) {
+
+		TerrainData terrainData = terrain.terrainData;
+
+		// Get the detail prototypes.
+		List<DetailPrototype> detailPrototypes = new List<DetailPrototype> (terrainData.detailPrototypes);
+
+		// Create a new detail prototype.
+		DetailPrototype detailPrototype = new DetailPrototype ();
+		detailPrototype.prototypeTexture = grass;
+		detailPrototype.bendFactor = 0f;
+		detailPrototype.dryColor = new Color (205f, 188f, 26f, 255f);
+		detailPrototype.healthyColor = new Color (67f, 249f, 42f, 255f);
+		detailPrototype.minHeight = 1f;
+		detailPrototype.maxHeight = 5f;
+		detailPrototype.minWidth = 1f;
+		detailPrototype.maxWidth = 2f;
+		detailPrototype.noiseSpread = 0.5f;
+		detailPrototype.usePrototypeMesh = false;
+		detailPrototype.renderMode = DetailRenderMode.GrassBillboard;
+
+		// Add the new detail prototype to the terrain.
+		detailPrototypes.Add(detailPrototype);
+		terrainData.detailPrototypes = detailPrototypes.ToArray();
+
+		Debug.Log(terrainData.detailPrototypes.Length);
+
+		// Convert from detail map to alpha map coordinate system.
+		float[,,] splatMaps = terrainData.GetAlphamaps (0, 0, terrainData.alphamapWidth, terrainData.alphamapHeight);
+		int alphaWidth = terrainData.alphamapWidth;
+		int alphaHeight = terrainData.alphamapHeight;
+		int detailWidth = terrainData.detailWidth;
+		int detailHeight = terrainData.detailHeight;
+		float widthScale = (1.0f / (float)detailWidth) * (float)alphaWidth;
+		float heightScale = (1.0f / (float)detailHeight) * (float)alphaHeight;
+
+		// Get the terrain splat textures.
+		int[,] map = terrain.terrainData.GetDetailLayer (0, 0, terrain.terrainData.detailWidth, terrain.terrainData.detailHeight, 0);
+
+		// Place grass in the terrain.
+		for (int y = 0; y < terrainData.detailHeight; y++) {
+			for (int x = 0; x < terrainData.detailWidth; x++) {
+				int alphaX = Mathf.FloorToInt ((float)x * widthScale);
+				int alphaY = Mathf.FloorToInt ((float)y * heightScale);
+				float value = splatMaps [alphaX, alphaY, 0];
+				if(value > 0.8f) {
+					map [x, y] = 5;
+				}
+			}
+		}
+
+		terrainData.SetDetailLayer (0, 0, 0, map);
 
 	}
 
