@@ -38,7 +38,6 @@ public class GameSystem : MonoBehaviour {
 	void Start () {
 		Time.timeScale = 1.0f;
 		startTime = Time.time;
-		createSpheres ();
 	}
 
 

@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class BirdAnimation : MonoBehaviour {
 
+	public GameObject player;
+
 	// The raven animator.
 	private Animator animator;
 
 	// The frame in the animation to display. The animation time scale is 0 to 1.
 	private float animationFrame = 0;
+
+	private float armLength;
 
 
 
@@ -17,6 +21,7 @@ public class BirdAnimation : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		animator = gameObject.GetComponent<Animator> ();
+		armLength = 0.5f;
 	}
 
 
@@ -40,7 +45,15 @@ public class BirdAnimation : MonoBehaviour {
 		} else if(Input.GetKey("e")) {
 			animationFrame += 0.1f;
 		}
-		animationFrame += Input.GetAxis ("Horizontal") / 100.0f;
+
+		// Use the kinect to control the animation.
+		if(player.GetComponent<KinectManager>().tracking() == true) {
+			// Get the average arm length.
+			float average = (player.GetComponent<KinectManager> ().getDistanceLeftHandToShoulder() + player.GetComponent<KinectManager> ().getDistanceRightHandToShoulder()) / 2.0f;
+
+			float value = 1.0f - (average / armLength);
+			setAnimation (value);
+		}
 	}
 
 
