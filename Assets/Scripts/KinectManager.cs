@@ -212,6 +212,32 @@ public class KinectManager : MonoBehaviour {
 
 
 	/// <summary>
+	/// Gets the distance from the left hand to the left hip.
+	/// </summary>
+	/// <returns>The distance from the left hand to the left hip.</returns>
+	public float getDistanceLeftHandToHip() {
+		float distance = getDistanceBetweenJoints (Kinect.JointType.HandLeft, Kinect.JointType.HipLeft);
+		return distance;
+	}
+
+
+
+
+
+	/// <summary>
+	/// Gets the distance from the right hand to the right hip.
+	/// </summary>
+	/// <returns>The distance from the right hand to the right hip.</returns>
+	public float getDistanceRightHandToHip() {
+		float distance = getDistanceBetweenJoints (Kinect.JointType.HandRight, Kinect.JointType.HipRight);
+		return distance;
+	}
+
+
+
+
+
+	/// <summary>
 	/// Returns true if the Kinect is tracking an object. Returns false otherwise.
 	/// </summary>
 	public bool tracking() {

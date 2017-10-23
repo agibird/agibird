@@ -14,14 +14,24 @@ public class BirdAnimation : MonoBehaviour {
 
 	private float armLength;
 
+	private float foldDistance = 16.0f;
+
+	private float stretchDistance = 39.0f;
+
+	private KinectManager kinectManager;
+
+	private bool stretched = true;
+
 
 
 
 
 	// Use this for initialization
 	void Start () {
+		kinectManager = player.GetComponent<KinectManager> ();
 		animator = gameObject.GetComponent<Animator> ();
 		armLength = 0.5f;
+		animator.speed = 0f;
 	}
 
 
@@ -29,30 +39,29 @@ public class BirdAnimation : MonoBehaviour {
 
 
 	// Update is called once per frame
-	void Update () {
-		animator.speed = 0f;
-		animator.Play ("New State", 0, animationFrame);
-	}
+	void FixedUpdate () {
 
-
-
-
-
-	void FixedUpdate() {
-		// Control the animation with the keyboard.
-		if(Input.GetKey("q")) {
-			animationFrame -= 0.1f;
-		} else if(Input.GetKey("e")) {
-			animationFrame += 0.1f;
+		// Use keyboard input.
+		if(Input.GetKey("q") && stretched == true) {
+			PlayFold ();
+			stretched = false;
+		}else if(Input.GetKey("e") && stretched == false) {
+			PlayStretch ();
+			stretched = true;
 		}
 
-		// Use the kinect to control the animation.
-		if(player.GetComponent<KinectManager>().tracking() == true) {
-			// Get the average arm length.
-			float average = (player.GetComponent<KinectManager> ().getDistanceLeftHandToShoulder() + player.GetComponent<KinectManager> ().getDistanceRightHandToShoulder()) / 2.0f;
+		// Use Kinect input.
+		if(kinectManager.tracking() == true) {
+			float average = (player.GetComponent<KinectManager> ().getDistanceLeftHandToHip() + player.GetComponent<KinectManager> ().getDistanceRightHandToHip()) / 2.0f;
 
-			float value = 1.0f - (average / armLength);
-			setAnimation (value);
+			// If hands close to hips, play folding animation. If hands not close to hips, play stretching animation.
+			if(average < foldDistance && stretched == true) {
+				PlayFold ();
+				stretched = false;
+			} else if(average > stretchDistance && stretched == false) {
+				PlayStretch ();
+				stretched = true;
+			}
 		}
 	}
 
@@ -64,8 +73,33 @@ public class BirdAnimation : MonoBehaviour {
 	/// Sets the animation frame. Use this to change which part of the bird animation that is displayed.
 	/// Frame should be between 0 and 1.
 	/// </summary>
-	public void setAnimation (float frame) {
-		animationFrame = frame;
+	public void SetAnimation (float frame) {
+		//animationFrame = frame;
+		animator.speed = 0f;
+		animator.Play ("Fold", 0, frame);
+	}
+
+
+
+
+
+	/// <summary>
+	/// Playes the folding animation.
+	/// </summary>
+	public void PlayFold() {
+		animator.speed = 5.0f;
+		animator.Play ("Fold");
+	}
+
+
+
+
+
+	/// <summary>
+	/// Playes the stretching animation.
+	/// </summary>
+	public void PlayStretch() {
+		animator.Play ("Stretch");
 	}
 
 
