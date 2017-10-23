@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.5
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3180806, g: 0.35493365, b: 0.41466352, a: 0.5}
+  m_IndirectSpecularColor: {r: 0.3180808, g: 0.35493404, b: 0.41466385, a: 0.5}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -157,6 +157,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
       propertyPath: waterMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
+      propertyPath: textureSize
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
+      propertyPath: disablePixelLights
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1947,9 +1955,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324f46838f7ed9f499eaf95fb310e056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kinectManager: {fileID: 1488704377}
-  sensitivity: 100
   gameSystem: {fileID: 1530457167}
+  keyboardInput: 1
+  useKinectInput: 0
+  controllerInput: 0
+  kinectInput: {fileID: 0}
 --- !u!135 &1488704379
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1985,14 +1995,14 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1488704376}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 0.1
+  m_Mass: 100
+  m_Drag: 0.02
+  m_AngularDrag: 4
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!1 &1520377684
 GameObject:
   m_ObjectHideFlags: 0

@@ -295,9 +295,10 @@ public class TerrainSystem : MonoBehaviour {
 					Vector3 position = new Vector3 (xmap, 0f, ymap);
 					position.y = mapHeight;
 					treeInstance.position = position;
-					treeInstance.color = Color.green;
+					treeInstance.color = Color.white;
+					treeInstance.color = new Color32(255, 255, 255, 5);
 					treeInstance.heightScale = Random.Range (0.5f, 1.9f);
-					treeInstance.lightmapColor = Color.white;
+					treeInstance.lightmapColor = new Color32(255, 255, 255, 5);
 					treeInstance.widthScale = 1.0f;
 
 					terrain.AddTreeInstance (treeInstance);

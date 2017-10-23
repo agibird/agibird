@@ -7,49 +7,120 @@ using UnityEngine;
 /// </summary>
 
 public class BirdController : MonoBehaviour {
-
-	public KinectManager kinectManager;
-
-	public int sensitivity = 100;
-
 	public GameObject gameSystem;
+
+	public bool keyboardInput;
+	public bool useKinectInput;
+	public bool controllerInput;
+
+	public KinectInput kinectInput;
+
+	private List<InputHandler> inputHandlers;
+
+	private Rigidbody rigidBody;
+
+	private float pitch, yaw;
 
 	// Use this for initialization
 	void Start () {
-		
+
+		inputHandlers = new List<InputHandler>();
+		if (keyboardInput) {
+			inputHandlers.Add (new KeyboardInput ());
+		}
+		if (useKinectInput) {
+			inputHandlers.Add (kinectInput);
+		}
+		if (controllerInput) {
+			inputHandlers.Add (new ControllerInput ());
+		}
+
+		rigidBody = gameObject.GetComponent<Rigidbody> ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
-	}
-
-	void FixedUpdate() {
-
-		Vector3 vectorBetweenHands = kinectManager.getVectorBetweenHands ();
-		Vector3 horizontal = new Vector3 (vectorBetweenHands.x, 0, vectorBetweenHands.z);
-
-		float angle = Vector3.Angle (horizontal, vectorBetweenHands);
-		if(vectorBetweenHands.y < 0) {
-			angle *= -1;
-		}
-
-		Quaternion direction = Quaternion.AngleAxis (angle/(float)sensitivity, -Vector3.up);
-
-		Vector3 leaningVector = kinectManager.getLeaningVector ();
-		float leaning = Vector3.Angle (Vector3.up, leaningVector);
-		if(leaningVector.z < 0) {
-			leaning *= -1;
-		}
-
-		if (kinectManager.tracking ()) {
-			gameObject.GetComponent<Rigidbody> ().MoveRotation (direction * transform.rotation);
-			transform.Find ("bird").localEulerAngles = new Vector3 (0f, 0f, angle);
-		}
-
-		gameObject.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 8.0f);
 
 	}
+
+	void FixedUpdate () {
+		Vector3 forward = transform.forward.normalized;
+		Vector3 up = transform.up.normalized;
+
+		float velocityMagnitude = rigidBody.velocity.magnitude;
+
+		AlignTowardsVelocity ();
+
+
+		float yaw = 0f;
+		float pitch = 0f;
+		float roll = 0f;
+		for (int i = 0; i < inputHandlers.Count; i++) {
+			InputHandler ih = inputHandlers[i];
+
+			if (ih == null) {
+				continue;
+			}
+
+			ih.update ();
+
+			yaw += ih.getYaw ();
+			pitch += ih.getPitch ();
+			roll += ih.getRoll ();
+		}
+
+		yaw = Mathf.Clamp (yaw, -1, +1);
+		pitch = Mathf.Clamp (pitch, -1, +1);
+		roll = Mathf.Clamp (roll, -1, +1);
+
+
+
+		float rollTorque = roll * 20f * velocityMagnitude * Time.fixedDeltaTime;
+		rigidBody.AddRelativeTorque (0, 0, rollTorque);
+
+
+
+
+		float gravityStrength = 3;
+
+		//gravity
+		rigidBody.velocity += gravityStrength * new Vector3(0, -1, 0) * Time.fixedDeltaTime;
+
+		//Poop engine
+		rigidBody.velocity += 0.5f * forward * Time.fixedDeltaTime;
+
+		//rigidBody.velocity += up*lift - forward*Mathf.Max(lift, 0.0f); //Allow negative lift, but not negative drag
+
+
+		//lift+pitch
+
+		float lift = Mathf.Min(gravityStrength, 0.5f * rigidBody.velocity.magnitude) * Time.fixedDeltaTime;
+		float pitchForce = 0.7f * -pitch * rigidBody.velocity.magnitude * Time.fixedDeltaTime;
+
+		float speed = rigidBody.velocity.magnitude;
+		rigidBody.velocity = (rigidBody.velocity + up * (lift + pitchForce)).normalized * speed;
+
+	}
+
+	void AlignTowardsVelocity () {
+
+		var targetDir = rigidBody.velocity;
+		var forward = rigidBody.transform.forward;
+		var localTarget = rigidBody.transform.InverseTransformDirection(targetDir);
+
+		float xz = Mathf.Sqrt(localTarget.x * localTarget.x + localTarget.z * localTarget.z);
+
+		float yaw = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
+		float pitch = Mathf.Atan2(localTarget.y, xz) * Mathf.Rad2Deg;
+
+		Vector3 eulerAngleVelocity = 2f * rigidBody.velocity.magnitude * new Vector3 (-pitch, yaw, 0) * Time.fixedDeltaTime;
+
+		rigidBody.AddRelativeTorque (eulerAngleVelocity);
+
+
+	} 
+
+
 
 	void OnTriggerEnter(Collider other) {
 		gameSystem.GetComponent<GameSystem> ().displayGameOver ();
