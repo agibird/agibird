@@ -20,6 +20,8 @@ public class GameSystem : MonoBehaviour {
 	// The UI panel which is displayed at the end of a round.
 	public GameObject endRoundPanel;
 
+	public GameObject gameOverPanel;
+
 	static private int nSpheres = 16;
 
 	private Transform[] spheres = new Transform[nSpheres];
@@ -28,7 +30,7 @@ public class GameSystem : MonoBehaviour {
 	private float startTime;
 
 	// The available play time.
-	private float playTime = 2.0f * 60.0f;
+	private float playTime;
 
 
 
@@ -36,6 +38,7 @@ public class GameSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		playTime = PlayerPrefs.GetFloat ("PlayTime");
 		Time.timeScale = 1.0f;
 		startTime = Time.time;
 	}
@@ -95,12 +98,23 @@ public class GameSystem : MonoBehaviour {
 
 
 
+	public void displayGameOver() {
+		Time.timeScale = 0f;
+		gameOverPanel.SetActive(true);
+	}
+
+
+
+
+
 	/// <summary>
 	/// Updates the user interface timer.
 	/// </summary>
 	/// <param name="time">Time.</param>
 	private void updateUITimer(float time) {
-		uiTimer.GetComponent<Text> ().text = "Time: " + Mathf.CeilToInt(time).ToString ();
+		int min = (int)time / 60;
+		int sec = (int)time % 60;
+		uiTimer.GetComponent<Text>().text = "Time: " + min.ToString() + ":" + sec.ToString("00");
 	}
 
 

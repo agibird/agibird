@@ -12,6 +12,8 @@ public class BirdController : MonoBehaviour {
 
 	public int sensitivity = 100;
 
+	public GameObject gameSystem;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -47,5 +49,9 @@ public class BirdController : MonoBehaviour {
 
 		gameObject.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 8.0f);
 
+	}
+
+	void OnTriggerEnter(Collider other) {
+		gameSystem.GetComponent<GameSystem> ().displayGameOver ();
 	}
 }
