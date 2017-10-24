@@ -38,20 +38,10 @@ public class KinectInput : MonoBehaviour, InputHandler {
 		// The vector indicating how much you lean.
 		Vector3 leaningVector = kinectManager.getLeaningVector ();
 
-		// A vertical vector.
-		Vector3 vertical = Vector3.up;
+		// The lean limit on how much you can lean.
+		float limit = 0.4f;
 
-		// How much you lean.
-		float angle = Vector3.Angle (vertical, leaningVector);
-
-		// The angle limit on how much you can lean.
-		float limit = 25.0f;
-
-		float value = angle / limit;
-
-		if(leaningVector.z > 0) {
-			value *= -1;
-		}
+		float value = (-leaningVector.normalized.z - 0.2f) / limit;
 
 		return value;
 	}
@@ -70,7 +60,7 @@ public class KinectInput : MonoBehaviour, InputHandler {
 		// The angle limit on how much you can tilt your arms.
 		float limit = 45.0f;
 
-		float value = angle / limit;
+		float value = -angle / limit;
 
 		if(vectorBetweenHands.y > 0) {
 			value *= -1;
