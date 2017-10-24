@@ -18,6 +18,6 @@ public class Speed : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		text.text = "Speed: " + (player.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f).ToString();
+		text.text = "Speed: " + (player.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f).ToString("00");
 	}
 }

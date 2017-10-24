@@ -14,9 +14,9 @@ public class BirdAnimation : MonoBehaviour {
 
 	private float armLength;
 
-	private float foldDistance = 16.0f;
+	private float foldDistance = 0.16f;
 
-	private float stretchDistance = 39.0f;
+	private float stretchDistance = 0.39f;
 
 	private KinectManager kinectManager;
 
