@@ -22,6 +22,8 @@ public class GameSystem : MonoBehaviour {
 
 	public GameObject gameOverPanel;
 
+	public GameObject pausePanel;
+
 	static private int nSpheres = 16;
 
 	private Transform[] spheres = new Transform[nSpheres];
@@ -50,6 +52,7 @@ public class GameSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		checkTime ();
+		checkPauseButton ();
 	}
 
 
@@ -138,6 +141,25 @@ public class GameSystem : MonoBehaviour {
 	public void addPoints(int number) {
 		int currentPoints = PlayerPrefs.GetInt ("Player Score");
 		PlayerPrefs.SetInt ("Player Score", currentPoints + number);
+	}
+
+
+
+
+
+	private void checkPauseButton() {
+		if(Input.GetKeyDown("escape")) {
+			Time.timeScale = 0f;
+			pausePanel.SetActive (true);
+		}
+	}
+
+
+
+
+
+	public void resumeGame() {
+		Time.timeScale = 1.0f;
 	}
 
 }
