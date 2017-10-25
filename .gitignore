@@ -32,3 +32,13 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+Assets/Scenes/Main.unity
+
+*.meta
+
+Assets/Scenes/Main.unity
+
+Assets/Meshes/Materials/Raven.mat
+
+Assets/Scenes/Main.unity

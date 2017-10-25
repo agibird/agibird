@@ -43,6 +43,7 @@ public class GameSystem : MonoBehaviour {
 		playTime = PlayerPrefs.GetFloat ("PlayTime");
 		Time.timeScale = 1.0f;
 		startTime = Time.time;
+		FindObjectOfType<AudioManager>().Play("Wind");
 	}
 
 
@@ -104,6 +105,8 @@ public class GameSystem : MonoBehaviour {
 	public void displayGameOver() {
 		Time.timeScale = 0f;
 		gameOverPanel.SetActive(true);
+		FindObjectOfType<AudioManager>().Play("BirdDeath");
+		FindObjectOfType<AudioManager>().Stop("Wind");
 	}
 
 
@@ -151,6 +154,7 @@ public class GameSystem : MonoBehaviour {
 		if(Input.GetKeyDown("escape")) {
 			Time.timeScale = 0f;
 			pausePanel.SetActive (true);
+			FindObjectOfType<AudioManager>().Pause("Wind");
 		}
 	}
 
@@ -160,6 +164,7 @@ public class GameSystem : MonoBehaviour {
 
 	public void resumeGame() {
 		Time.timeScale = 1.0f;
+		FindObjectOfType<AudioManager>().Play("Wind");
 	}
 
 }

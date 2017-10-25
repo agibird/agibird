@@ -89,6 +89,7 @@ public class BirdAnimation : MonoBehaviour {
 	public void PlayFold() {
 		animator.speed = 5.0f;
 		animator.Play ("Fold");
+		FindObjectOfType<AudioManager>().Play("BeatWings");
 	}
 
 
@@ -100,6 +101,7 @@ public class BirdAnimation : MonoBehaviour {
 	/// </summary>
 	public void PlayStretch() {
 		animator.Play ("Stretch");
+		FindObjectOfType<AudioManager>().Play("BeatWings");
 	}
 
 
