@@ -67,7 +67,7 @@ public class TerrainSystem : MonoBehaviour {
 
 		terrain.castShadows = true;
 
-		terrain.treeBillboardDistance = 500.0f;
+		terrain.treeBillboardDistance = 350.0f;
 		terrain.treeCrossFadeLength = 100.0f;
 		terrain.treeDistance = 1000.0f;
 
@@ -295,7 +295,6 @@ public class TerrainSystem : MonoBehaviour {
 					Vector3 position = new Vector3 (xmap, 0f, ymap);
 					position.y = mapHeight;
 					treeInstance.position = position;
-					treeInstance.color = Color.white;
 					treeInstance.color = new Color32(255, 255, 255, 5);
 					treeInstance.heightScale = Random.Range (0.5f, 1.9f);
 					treeInstance.lightmapColor = new Color32(255, 255, 255, 5);
