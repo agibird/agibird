@@ -1480,23 +1480,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 934137771}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d11fd5ad7196f4ebd96c043c9778f339, type: 3}
+  m_Script: {fileID: 11500000, guid: ca041fe4b3dbf7a4cbd8fa607a1bb1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
   - name: BirdDeath
-    clip: {fileID: 8300000, guid: 54093f64749c94ec1b2fdfb3a56216fc, type: 3}
+    clip: {fileID: 8300000, guid: 0e8082e8ac9a54a4a912e3f4f6c74367, type: 3}
     volume: 0.84
     pitch: 1.02
     source: {fileID: 0}
   - name: Wind
-    clip: {fileID: 8300000, guid: 0856bd7e430454d9bbc0faccddc3132a, type: 3}
+    clip: {fileID: 8300000, guid: a6cf2009786a2c8499af61468e6e9cb0, type: 3}
     volume: 0.84
     pitch: 1.02
     source: {fileID: 0}
   - name: BeatWings
-    clip: {fileID: 8300000, guid: 6ccbe57354a7e4f59a127d9ac4236e46, type: 3}
-    volume: 0.84
+    clip: {fileID: 8300000, guid: 57161a543626f3e4fa9d0bea785b5641, type: 3}
+    volume: 1.52
     pitch: 1.02
     source: {fileID: 0}
 --- !u!4 &934137773
