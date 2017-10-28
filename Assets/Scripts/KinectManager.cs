@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// Kinect manager. Handles input from Microsoft Kinect.
+/// Author: Jonatan Cöster
+/// Created: 2017-09-21
+/// Version: 2.0
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Kinect = Windows.Kinect;

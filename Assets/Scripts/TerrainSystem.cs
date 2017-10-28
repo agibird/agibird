@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// Terrain system. This will generate an island terrain with grass and trees.
+/// Author: Jonatan Cöster
+/// Created: 2017-09-16
+/// Version: 3.0
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

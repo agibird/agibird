@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// Bird animation. Handles the bird animations.
+/// Author: Jonatan Cöster
+/// Created: 2017-10-20
+/// Version: 1.0
+/// Additions: Sound, by Yinan Xu, added 2017-10-25
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

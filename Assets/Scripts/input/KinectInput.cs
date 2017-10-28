@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// Converts vectors from the Kinect manager to a value between -1 and 1.
+/// Author: Jonatan Cöster
+/// Created: 2017-10-08
+/// Version: 1.0
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

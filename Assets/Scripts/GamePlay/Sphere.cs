@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// Sphere. Makes a game object hover.
+/// Author: Jonatan Cöster
+/// Created: 2017-10-14
+/// Version: 1.0
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

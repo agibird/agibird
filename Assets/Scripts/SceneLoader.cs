@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// Scene loader. Handles scene loading and application quitting.
+/// Author: Jonatan Cöster
+/// Created: 2017-10-08
+/// Version: 1.0
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;

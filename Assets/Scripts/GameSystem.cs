@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// Handles all aspects of the gameplay such as keeping track of time and points. Also updates relevant parts of the UI.
+/// Author: Jonatan Cöster
+/// Created: 2017-10-14
+/// Version 1.0
+/// Additions: Sound, added by Yinan Xu, 2017-10-25
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-/// <summary>
-/// Handles all aspects of the gameplay such as keeping track of time and points. Also updates relevant parts of the UI.
-/// </summary>
 
 public class GameSystem : MonoBehaviour {
 
