@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class TerrainSystem : MonoBehaviour {
 
 	public Camera theCamera;
@@ -28,19 +29,14 @@ public class TerrainSystem : MonoBehaviour {
 
 	public Texture2D grass;
 
-	// Use this for initialization
-	void Start () {
-		buildTile (0, 0);
-	}
 	
-
 
 
 
 	/// <summary>
 	/// Creates a terrain tile.
 	/// </summary>
-	void buildTile(int xPosition, int zPosition) {
+	public void buildTile(int xPosition, int zPosition) {
 		
 		GameObject tile = new GameObject ();
 
