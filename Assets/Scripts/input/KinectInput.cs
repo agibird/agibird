@@ -1,17 +1,12 @@
-﻿/// <summary>
-/// Converts vectors from the Kinect manager to a value between -1 and 1.
-/// Author: Jonatan Cöster
-/// Created: 2017-10-08
-/// Version: 1.0
-/// </summary>
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class KinectInput : MonoBehaviour, InputHandler {
 
 	public KinectManager kinectManager;
+
+	public float pitchAngle;
 
 	public void update(){
 		
@@ -43,12 +38,23 @@ public class KinectInput : MonoBehaviour, InputHandler {
 	public float getPitch() {
 
 		// The vector indicating how much you lean.
-		Vector3 leaningVector = kinectManager.getLeaningVector ();
+		Vector3 l = kinectManager.getLeaningVector ();
 
 		// The lean limit on how much you can lean.
-		float limit = 0.4f;
+		float limit = 0.7f;
 
-		float value = (-leaningVector.normalized.z - 0.2f) / limit;
+		Vector4 l2 = new Vector4 ();
+		l2.Set (l.x, l.y, l.z, 1);
+
+		Matrix4x4 m = Matrix4x4.Rotate (Quaternion.Euler (new Vector3(+pitchAngle, 0, 0)));
+
+		Vector4 v = m * l2;
+		//print (m + " * " + l2 + " ---> " + v);
+
+		float f = -v.z / Mathf.Sqrt (v.x * v.x + v.y * v.y + v.z * v.z);
+
+
+		float value = f / limit;
 
 		return value;
 	}
@@ -65,7 +71,7 @@ public class KinectInput : MonoBehaviour, InputHandler {
 		float angle = Vector3.Angle (horizontal, vectorBetweenHands);
 
 		// The angle limit on how much you can tilt your arms.
-		float limit = 45.0f;
+		float limit = 70.0f;
 
 		float value = -angle / limit;
 
