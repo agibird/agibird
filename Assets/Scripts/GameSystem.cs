@@ -44,7 +44,10 @@ public class GameSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		playTime = PlayerPrefs.GetFloat ("PlayTime");
+		GameSettings currentSettings =
+			GameSettingsToDiskInterface.LoadOrDefault();
+
+		playTime = currentSettings.PlayTime * 60.0f;
 		Time.timeScale = 1.0f;
 		startTime = Time.time;
 		FindObjectOfType<AudioManager>().Play("Wind");
